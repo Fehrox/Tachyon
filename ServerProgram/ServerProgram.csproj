@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>ServerProgram</RootNamespace>
+    <AssemblyName>ServerProgram</AssemblyName>
+    <Company>ServerProgram</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tachyon-Server-Core\Tachyon-Server-Core.csproj" />
+    <ProjectReference Include="..\Tachyon-Server-IO\Tachyon-Server-IO.csproj" />
+    <ProjectReference Include="..\Tachyon-Server-RPC\Tachyon-Server-RPC.csproj" />
+  </ItemGroup>
+
+</Project>

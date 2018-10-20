@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>Tachyon_Server_Core</RootNamespace>
+    <Company>AIR Pty Ltd</Company>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tachyon-Server-IO\Tachyon-Server-IO.csproj" />
+    <ProjectReference Include="..\Tachyon-Server-RPC\Tachyon-Server-RPC.csproj" />
+  </ItemGroup>
+
+</Project>
