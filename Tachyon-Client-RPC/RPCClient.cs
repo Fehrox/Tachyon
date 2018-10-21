@@ -48,6 +48,10 @@ namespace TachyonClientRPC
         }
 
         void Recieved(byte[] data) {
+
+            // TODO: Find what causes this to become null.
+            if (data == null) return;
+
             if (_ask.IsAskPacket(data)) {
                 _ask.Replied(data);
             } else

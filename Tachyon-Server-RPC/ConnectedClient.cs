@@ -42,6 +42,12 @@ namespace TachyonServerRPC
                 var isAsk = _ask.IsAskPacket(data);
                 const short METHOD_HEADER = 2, CALLBACK_HEADER = 4;
                 var method = _stub.GetMethod(data, isAsk ? CALLBACK_HEADER : METHOD_HEADER);
+                if (method == null) {
+                    // TODO: Find what causes this to become null.
+                    Console.WriteLine("Recieved invalid method data");
+                    return;
+                }
+
                 var replyData = method.Invoke();
                 if (isAsk) {
                     data = _ask.PackReply(data, replyData);
