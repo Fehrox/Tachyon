@@ -9,7 +9,7 @@ namespace TachyonClientCommon {
     public class Stub {
 
         ISerializer _serializer;
-        Dictionary<Int16, ClientMethod> _methods = new Dictionary<Int16, ClientMethod>();
+        Dictionary<Int16, RemoteMethod> _methods = new Dictionary<Int16, RemoteMethod>();
 
         private const int METHOD_HEADER = 2;
 
@@ -17,29 +17,29 @@ namespace TachyonClientCommon {
             _serializer = serializer;
         }
 
-        public void Register<I, O>(Int16 methodName, Func<I, O> func) {
-            var methodCallback = new ClientMethod(func.Method, func.Target);
-            Register(methodName, methodCallback);
-        }
-
-        public void Register<T>(Int16 methodHash, Action<T> method) {
-            var methodCallback = new ClientMethod(method.Method, method.Target);
+        public void Register<I, O>( Int16 methodHash, Func<I, O> func ) {
+            var methodCallback = new RemoteMethod(func.Method, func.Target);
             Register(methodHash, methodCallback);
         }
 
-        private void Register(Int16 methodHash, ClientMethod methodCallback) {
-            //var methodHash = _hash.HashMethod(methodName);
+        public void Register<T>( Int16 methodHash, Action<T> method ) {
+            var methodCallback = new RemoteMethod(method.Method, method.Target);
+            Register(methodHash, methodCallback);
+        }
+
+        private void Register( Int16 methodHash, RemoteMethod remoteMethod ) {
+            
             if (!_methods.ContainsKey(methodHash)) {
-                _methods.Add(methodHash, methodCallback);
+                _methods.Add(methodHash, remoteMethod);
             } else {
-                //var hashConflict = _methods[methodHash].Method.Name;
-                //var errorMsg = methodCallback.Method.Name + " shares hash with " + 
-                    //hashConflict + ". Rename one before registering callback.";
-                //throw new InvalidOperationException(errorMsg);
+                var hashConflict = _methods[methodHash].Method.Name;
+                var errorMsg = remoteMethod.Method.Name + " shares hash with " +
+                    hashConflict + ". Rename one before registering callback.";
+                throw new InvalidOperationException(errorMsg);
             }
         }
 
-        public InvocationDescriptor GetMethod(byte[] data, short argStartIndex) {
+        public InvocationDescriptor GetMethod( byte[] data, short argStartIndex ) {
 
             var methodHashBytes = data.Take(METHOD_HEADER).ToArray();
             var methodHash = BitConverter.ToInt16(methodHashBytes, 0);
@@ -64,14 +64,14 @@ namespace TachyonClientCommon {
 
         }
 
-        public void Invoke(byte[] data) {
+        public void Invoke( byte[] data ) {
 
             var method = GetMethod(data, METHOD_HEADER);
             if(method != null) method.Invoke();
 
         }
 
-        public byte[] PackSend(Int16 methodHash, object[] arg) {
+        public byte[] PackSend( Int16 methodHash, object[] arg ) {
 
             byte[] commandHeaderBytes = BitConverter.GetBytes(methodHash);
             var argData = _serializer.SerializeObject(arg);
@@ -83,11 +83,15 @@ namespace TachyonClientCommon {
             return sendData;
         }
         
-        public class ClientMethod {
+        public class RemoteMethod {
+
             public object Target;
             public MethodInfo Method;
 
-            public ClientMethod(MethodInfo method, object target) {
+            public RemoteMethod(
+                MethodInfo method, 
+                object target
+            ) {
                 Method = method;
                 Target = target;
             }
@@ -95,7 +99,7 @@ namespace TachyonClientCommon {
 
         public class InvocationDescriptor {
 
-            public ClientMethod ClientMethod { get; set; }
+            public RemoteMethod ClientMethod { get; set; }
             public object[] ArgumentData { get; set; }
 
             public object Invoke() {
@@ -111,7 +115,8 @@ namespace TachyonClientCommon {
                 //    typedArgs.Add(Convert.ChangeType(arg, expectedType));
                 //}
 
-                return ClientMethod.Method.Invoke(ClientMethod.Target, ArgumentData.ToArray() );
+                return ClientMethod.Method
+                    .Invoke(ClientMethod.Target, ArgumentData.ToArray() );
             }
 
         }

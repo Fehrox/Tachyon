@@ -16,8 +16,9 @@ namespace TachyonServerCore {
             _endPoints = endPoints;
         }
 
-        public void Start() {
+        public HostCore Start() {
             AcceptClients(Listen());
+            return this;
         }
 
         public void Broadcast(string method, params object[] args) {
@@ -26,8 +27,7 @@ namespace TachyonServerCore {
         }
 
         private static TcpListener Listen() {
-            IPAddress ipAddress = Dns.GetHostEntry("localhost").AddressList[1];
-            TcpListener tcpListener = new TcpListener(ipAddress, 13);
+            TcpListener tcpListener = new TcpListener(IPAddress.Any, 13);
             tcpListener.Start();
             return tcpListener;
         }

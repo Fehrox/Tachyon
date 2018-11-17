@@ -8,7 +8,7 @@ namespace TachyonCommon {
     public class Asks {
 
         const int ASK_BIT_INDEX = 0;
-        SortedList<Int16, Stub.ClientMethod> _pendingResponses = new SortedList<Int16, Stub.ClientMethod>();
+        SortedList<Int16, Stub.RemoteMethod> _pendingResponses = new SortedList<Int16, Stub.RemoteMethod>();
         List<Int16> _pendingRequests = new List<Int16>();
         ISerializer _serializer;
         
@@ -63,7 +63,7 @@ namespace TachyonCommon {
             var callbackId = _pendingResponses.Any() ?
                 (_pendingResponses.Last().Key+1) % short.MaxValue : 0;
             var callbackIdBytes = BitConverter.GetBytes(callbackId);
-            var callback = new Stub.ClientMethod(reply.Method, reply.Target);
+            var callback = new Stub.RemoteMethod(reply.Method, reply.Target);
             _pendingResponses.Add((short)callbackId, callback);
 
             var dataBody = data.Skip(methodHashBytes.Length).ToArray();

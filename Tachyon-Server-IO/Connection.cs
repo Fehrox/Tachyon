@@ -7,7 +7,7 @@ using System.Threading;
 namespace TachyonServerIO 
 {
 
-    public class Server : IServer 
+    public class Connection : IConnection 
     {
 
         bool _connected = true;
@@ -19,7 +19,7 @@ namespace TachyonServerIO
         TcpClient _client;
         Queue<string> _sendQueue = new Queue<string>();
 
-        public Server(TcpClient client) {
+        public Connection(TcpClient client) {
             _client = client;
         }
 
@@ -82,6 +82,7 @@ namespace TachyonServerIO
                     Console.WriteLine("Sending " + data.Length + " bytes");
                     var headerBytes = new byte[] { (byte)data.Length };
                     stream.WriteByte((byte)data.Length);
+                    Console.WriteLine("Bytes " + data.Length);
 
                     stream.WriteAsync(data);
                 }

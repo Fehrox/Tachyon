@@ -8,7 +8,7 @@ namespace TachyonServerRPC {
 
     public class EndpointMap {
         
-        public Stub Stub;
+        public ServerStub Stub;
         public ISerializer Serializer;
         public AskHasher Hasher = new AskHasher();
 
@@ -17,7 +17,7 @@ namespace TachyonServerRPC {
 
         public EndpointMap(ISerializer serializer) {
             Serializer = serializer;
-            Stub = new Stub(serializer);
+            Stub = new ServerStub(serializer);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace TachyonServerRPC {
             _sendEndPoints.Add((client) => {
                 Action<T> method = new Action<T>((parameters) => endPoint.Invoke(client, parameters));
                 var methodHash = Hasher.HashMethod(endPoint.Method.Name);
-                Stub.Register<T>(methodHash, method);
+                Stub.Register<T>(methodHash, method, client.Guid);
             });
 
         }
@@ -47,7 +47,7 @@ namespace TachyonServerRPC {
                 Func<I, O> func = new Func<I, O>((parameters) => clientMethod.Invoke(client, parameters));
                 var methodHash = Hasher.HashMethod(clientMethod.Method.Name);
                 methodHash = AskHasher.SetAskBit(methodHash, true);
-                Stub.Register<I, O>(methodHash, func);
+                Stub.Register<I, O>(methodHash, func, client.Guid);
             });
 
         }

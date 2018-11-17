@@ -6,6 +6,7 @@ namespace TachyonCommon.Hash
 {
     public class AskHasher : Hasher
     {
+
         public override Int16 HashMethod(string str) {
             var hash = base.HashMethod(str);
             hash = ClearAskFlag(hash);
