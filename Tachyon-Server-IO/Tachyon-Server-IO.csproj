@@ -10,4 +10,8 @@
     <OutputPath>bin\Debug\netcoreapp2.1\</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tachyon-Common\Tachyon-Common.csproj" />
+  </ItemGroup>
+
 </Project>

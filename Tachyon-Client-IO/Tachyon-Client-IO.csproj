@@ -10,4 +10,8 @@
     <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tachyon-Common\Tachyon-Common.csproj" />
+  </ItemGroup>
+
 </Project>
