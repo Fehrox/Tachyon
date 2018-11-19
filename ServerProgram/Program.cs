@@ -13,9 +13,9 @@ namespace ServerProgram
     {
         static void Main(string[] args) {
 
-            var endPointMap = new EndpointMap(new JsonSerializer());
-            endPointMap.AddSendEndpoint<LogDTO>(Log);
-            endPointMap.AddAskEndpoint<long, long>(Ping);
+            var endPointMap = new EndPointMap(new JsonSerializer());
+            endPointMap.AddSendEndPoint<LogDTO>(Log);
+            endPointMap.AddAskEndPoint<long, long>(Ping);
 
             var server = new HostCore(endPointMap);
             server.Start();

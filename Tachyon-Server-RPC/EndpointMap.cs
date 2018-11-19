@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using TachyonClientCommon;
 using TachyonCommon.Hash;
 using System;
 using TachyonCommon;
 
 namespace TachyonServerRPC {
 
-    public class EndpointMap {
+    public class EndPointMap {
         
         public ServerStub Stub;
         public ISerializer Serializer;
@@ -15,7 +14,7 @@ namespace TachyonServerRPC {
         List<Action<ConnectedClient>> _sendEndPoints = new List<Action<ConnectedClient>>();
         List<Action<ConnectedClient>> _askEndPoints = new List<Action<ConnectedClient>>();
 
-        public EndpointMap(ISerializer serializer) {
+        public EndPointMap(ISerializer serializer) {
             Serializer = serializer;
             Stub = new ServerStub(serializer);
         }
@@ -25,7 +24,7 @@ namespace TachyonServerRPC {
         /// </summary>
         /// <typeparam name="T">Type of the method's argument.</typeparam>
         /// <param name="endPoint">The method called by the client.</param>
-        public void AddSendEndpoint<T>(Action<ConnectedClient, T> endPoint) {
+        public void AddSendEndPoint<T>(Action<ConnectedClient, T> endPoint) {
 
             _sendEndPoints.Add((client) => {
                 Action<T> method = new Action<T>((parameters) => endPoint.Invoke(client, parameters));
@@ -41,7 +40,7 @@ namespace TachyonServerRPC {
         /// <typeparam name="I">Request parameter type</typeparam>
         /// <typeparam name="O">Response data type</typeparam>
         /// <param name="clientMethod">Method which will handle the request.</param>
-        public void AddAskEndpoint<I, O>(Func<ConnectedClient, I, O> clientMethod) {
+        public void AddAskEndPoint<I, O>(Func<ConnectedClient, I, O> clientMethod) {
 
             _askEndPoints.Add((client) => {
                 Func<I, O> func = new Func<I, O>((parameters) => clientMethod.Invoke(client, parameters));
