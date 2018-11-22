@@ -11,7 +11,7 @@ namespace TachyonCommon {
         SortedList<Int16, Stub.RemoteMethod> _pendingResponses = new SortedList<Int16, Stub.RemoteMethod>();
         List<Int16> _pendingRequests = new List<Int16>();
         ISerializer _serializer;
-        
+
         public Asks(Stub stub, ISerializer serializer) {
             _serializer = serializer;
         }
@@ -25,17 +25,24 @@ namespace TachyonCommon {
             short methodHashSize = sizeof(Int16),
                   callbackIdSize = sizeof(Int16);
 
-            var argData = response.Skip(methodHashSize + callbackIdSize);
-            //var argJsonStr = Encoding.ASCII.GetString(argData.ToArray());
-            var arg = _serializer.DeserializeObject(argData.ToArray(), new[] { typeof(object) });
-
             var callingMethodHash = BitConverter.ToInt16(response, 0);
             var isRegistedRequest = _pendingRequests.Contains(callingMethodHash);
             if (isRegistedRequest) {
                 var callbackId = BitConverter.ToInt16(response, methodHashSize);
                 var request = _pendingResponses[callbackId];
-                request.Method.Invoke(request.Target, arg );
+
+                var argData = response.Skip(methodHashSize + callbackIdSize);
+                var callbackArgs = request.Method.GetParameters()
+                    .Select(p => p.ParameterType)
+                    .ToArray();
+                //var argJsonStr = Encoding.ASCII.GetString(argData.ToArray());
+                var arg = _serializer.DeserializeObject(argData.ToArray(), callbackArgs);
+
+                request.Method.Invoke(request.Target, arg);
                 _pendingRequests.Remove(callingMethodHash);
+            } else {
+                Console.WriteLine("Recieved response to " +
+                    "unregestered request " + callingMethodHash);
             }
         }
 
@@ -61,7 +68,7 @@ namespace TachyonCommon {
             _pendingRequests.Add(methodHash);
 
             var callbackId = _pendingResponses.Any() ?
-                (_pendingResponses.Last().Key+1) % short.MaxValue : 0;
+                (_pendingResponses.Last().Key + 1) % short.MaxValue : 0;
             var callbackIdBytes = BitConverter.GetBytes(callbackId);
             var callback = new Stub.RemoteMethod(reply.Method, reply.Target);
             _pendingResponses.Add((short)callbackId, callback);
@@ -69,11 +76,11 @@ namespace TachyonCommon {
             var dataBody = data.Skip(methodHashBytes.Length).ToArray();
 
             var dataLen = methodHashBytes.Length + callbackIdBytes.Length + dataBody.Length;
-            var packedData = new byte[ dataLen ];
+            var packedData = new byte[dataLen];
             methodHashBytes.CopyTo(packedData, 0);
             callbackIdBytes.CopyTo(packedData, methodHashBytes.Length);
             dataBody.CopyTo(packedData, methodHashBytes.Length + callbackIdBytes.Length);
-            
+
             return packedData;
         }
 

@@ -44,8 +44,7 @@ namespace TachyonServerRPC
         public void Start() {
             _connection.Start();
             _connection.OnRecieved += (data) => {
-
-                Console.WriteLine( Guid + " " + Encoding.ASCII.GetString(data));
+                var requestHash = new[] { data[0], data[1] };
 
                 var isAsk = _ask.IsAskPacket(data);
                 const short METHOD_HEADER = 2, CALLBACK_HEADER = 4;
@@ -59,6 +58,7 @@ namespace TachyonServerRPC
 
                 var replyData = method.Invoke();
                 if (isAsk) {
+                    Array.Copy(requestHash, data, requestHash.Length);
                     data = _ask.PackReply(data, replyData);
                     _connection.Send(data);
                 }
