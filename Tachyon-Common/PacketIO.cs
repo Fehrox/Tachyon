@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Threading;
+using System.Linq;
+using System;
 
 namespace TachyonCommon {
     public class PacketIO {
 
         const int CHUNK_SIZE = 255;
-        NetworkStream _stream;
+        const int ONE_BYTE = 1;
 
-        List<byte[]> _recieveBuffer = new List<byte[]>();
-        AutoResetEvent _recieveLock = new AutoResetEvent(false);
+        NetworkStream _stream;
 
         public PacketIO(NetworkStream stream) {
             _stream = stream;
@@ -19,58 +17,42 @@ namespace TachyonCommon {
 
         public byte[] Recieve() {
 
-            _recieveBuffer.Clear();
-            int incomingBytes = _stream.ReadByte();
+            List<byte[]> recieveBuffer = new List<byte[]>();
+
+            short incomingBytes = ReadIncomingBytes();
             bool smallMessage = incomingBytes < CHUNK_SIZE;
             bool lastChunk = false;
 
             do {
 
                 var buffer = new byte[incomingBytes];
-                _stream.BeginRead(
-                    buffer, 0, incomingBytes,
-                    new AsyncCallback(Recieved),
-                    new Result {
-                        Buffer = buffer,
-                        Stream = _stream });
-                _recieveLock.WaitOne();
+                _stream.Read(buffer, 0, incomingBytes);
+                recieveBuffer.Add(buffer);
 
                 if (lastChunk | smallMessage) break;
 
                 if (incomingBytes == CHUNK_SIZE)
-                    incomingBytes = _stream.ReadByte();
+                    incomingBytes = ReadIncomingBytes();
 
-                if(incomingBytes != CHUNK_SIZE)
+                if (incomingBytes != CHUNK_SIZE)
                     lastChunk = true;
 
             } while (
-                (incomingBytes == CHUNK_SIZE && 
+                (incomingBytes == CHUNK_SIZE &&
                 // Incoming bytes are written as 0 
                 // when the message is eactly CHUNK_SIZE.
-                incomingBytes != 0) | lastChunk );
+                incomingBytes != 0) | lastChunk);
 
-            var recievedBytes = _recieveBuffer
+            var recievedBytes = recieveBuffer
                 .SelectMany(chunk => chunk)
                 .ToArray();
             return recievedBytes;
         }
 
-        void Recieved(IAsyncResult ar) {
-
-            var recieved = (ar.AsyncState as Result);
-            var stream = recieved.Stream;
-            var buffer = recieved.Buffer;
-
-            var bytesRead = stream.EndRead(ar);
-            _recieveBuffer.Add(buffer);
-
-            _recieveLock.Set();
-
-        }
-
-        private class Result {
-            public byte[] Buffer;
-            public NetworkStream Stream;
+        private short ReadIncomingBytes() {
+            var lengthPacket = new byte[ONE_BYTE];
+            _stream.Read(lengthPacket, 0, ONE_BYTE);
+            return lengthPacket[0];
         }
 
         public void Send(byte[] data) {
@@ -79,25 +61,17 @@ namespace TachyonCommon {
                 var writeSize = Math.Min(CHUNK_SIZE, data.Length - i);
                 var chunk = Slice(data, i, writeSize);
 
-                var lengthByte = BitConverter.GetBytes((short)chunk.Length)[0];
-                _stream.WriteByte( lengthByte );
-
-                _stream.BeginWrite(
-                    chunk, 0, chunk.Length, 
-                    new AsyncCallback(Sent), 
-                    _stream );
+                var lengthPacket = BitConverter.GetBytes((short)chunk.Length)[0];
+                var combinedPacket = new[] { lengthPacket }.Concat(chunk).ToArray();
+                _stream.Write(combinedPacket, 0, ONE_BYTE + chunk.Length);
 
                 // Message is exactly of length CHUNK_SIZE, 
                 // write 0 to signal end of packet.
-                var nextChunkWouldOverflow = i + CHUNK_SIZE > data.Length;
-                if (writeSize == CHUNK_SIZE && nextChunkWouldOverflow)
-                    _stream.WriteByte(BitConverter.GetBytes((short)0)[0]);
+                if (writeSize == CHUNK_SIZE && i + CHUNK_SIZE >= data.Length) {
+                    _stream.WriteByte(new byte());
+                    break;
+                }
             }
-        }
-
-        void Sent(IAsyncResult ar) {
-            var stream = (ar.AsyncState as NetworkStream);
-            stream.EndWrite(ar);
         }
 
         byte[] Slice(byte[] buffer, int index, int length) {
