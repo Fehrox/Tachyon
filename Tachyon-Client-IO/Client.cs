@@ -49,7 +49,13 @@ namespace TachyonClientIO
         {
             if (!_connected) return;
 
-            _packetIO.Send(data);
+            try {
+                _packetIO.Send(data);
+            } catch(IOException) {
+                _connected = false;
+                OnDisconnected?.Invoke();
+            }
+
             //var headerBytes = new byte[] { (byte)data.Length };
 
             //_stream.Write(headerBytes, 0, 1);
@@ -71,8 +77,11 @@ namespace TachyonClientIO
                 if (stream.CanRead)
                     try
                     {
-                        var recievedBytes = _packetIO.Recieve();
-                        OnRecieved?.Invoke(recievedBytes);
+                        var receivedBytes = _packetIO.Recieve();
+                        if (receivedBytes.Length == 0) return;
+
+                        OnRecieved?.Invoke(receivedBytes);
+                        
                         //int incomingBytes = stream.ReadByte();
                         //byte[] buffer = new byte[incomingBytes];
 
