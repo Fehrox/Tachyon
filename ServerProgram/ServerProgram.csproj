@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Interop\Interop.csproj" />
+    <ProjectReference Include="..\Tachyon-Server-Binder\Tachyon-Server-Binder.csproj" />
     <ProjectReference Include="..\Tachyon-Server-Core\Tachyon-Server-Core.csproj" />
     <ProjectReference Include="..\Tachyon-Server-IO\Tachyon-Server-IO.csproj" />
     <ProjectReference Include="..\Tachyon-Server-RPC\Tachyon-Server-RPC.csproj" />

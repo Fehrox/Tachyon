@@ -28,7 +28,7 @@ namespace TachyonServerBinder
 
         public static void Bind(HostCore connection, Type serviceInterfaceType, TService service, EndPointMap map)
         {
-            if(!typeof(TService).IsInterface)
+            if(!serviceInterfaceType.IsInterface)
                 throw new ArgumentException($"{serviceInterfaceType.Name} is not an interface. " +
                     $"Use interfaces to define the communication contracts, rather than binding a class. ");
             
@@ -88,8 +88,8 @@ namespace TachyonServerBinder
                 x.FinishBlock(); // Finish class xBinding
                 x.FinishBlock(); // Finish namespace
 
-                var writer = (x as SourceWriter).Code();
-                Console.WriteLine(writer);
+//                var writer = (x as SourceWriter).Code();
+//                Console.WriteLine(writer);
 
             });
 

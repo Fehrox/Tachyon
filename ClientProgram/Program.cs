@@ -22,8 +22,8 @@ namespace ClientProgram {
             //    Console.WriteLine(str);
             //};
 
-            client.On<LogDTO>(Log);
-            client.On<LogDTO>(LogWarning);
+            client.On<LogDTO>(HandleOnLog);
+            client.On<LogDTO>(HandleOnLogWarning);
 
             int i = 0;
             while (true) {
@@ -43,11 +43,11 @@ namespace ClientProgram {
             _sw.Stop();
         }
 
-        public static void Log(LogDTO message) {
+        public static void HandleOnLog(LogDTO message) {
             Console.WriteLine(message.Message);
         }
 
-        public static void LogWarning(LogDTO message) {
+        public static void HandleOnLogWarning(LogDTO message) {
             Console.WriteLine("Warning: " + message.Message);
         }
     }

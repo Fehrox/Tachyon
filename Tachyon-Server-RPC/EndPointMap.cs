@@ -7,12 +7,12 @@ namespace TachyonServerRPC {
 
     public class EndPointMap {
         
-        public ServerStub Stub;
-        public ISerializer Serializer;
-        public AskHasher Hasher = new AskHasher();
+        public readonly ServerStub Stub;
+        public readonly ISerializer Serializer;
+        public readonly AskHasher Hasher = new AskHasher();
 
-        List<Action<ConnectedClient>> _sendEndPoints = new List<Action<ConnectedClient>>();
-        List<Action<ConnectedClient>> _askEndPoints = new List<Action<ConnectedClient>>();
+        readonly List<Action<ConnectedClient>> _sendEndPoints = new List<Action<ConnectedClient>>();
+        readonly List<Action<ConnectedClient>> _askEndPoints = new List<Action<ConnectedClient>>();
 
         public EndPointMap(ISerializer serializer) {
             Serializer = serializer;
@@ -24,11 +24,17 @@ namespace TachyonServerRPC {
         /// </summary>
         /// <typeparam name="T">Type of the method's argument.</typeparam>
         /// <param name="endPoint">The method called by the client.</param>
-        public void AddSendEndPoint<T>(Action<ConnectedClient, T> endPoint) {
+        public void AddSendEndpoint<T>(Action<ConnectedClient, T> endPoint) {
+
+            AddSendEndpoint( endPoint, endPoint.Method.Name);
+
+        }
+        
+        public void AddSendEndpoint<T>(Action<ConnectedClient, T> endPoint, string methodName) {
 
             _sendEndPoints.Add((client) => {
                 Action<T> method = new Action<T>((parameters) => endPoint.Invoke(client, parameters));
-                var methodHash = Hasher.HashMethod(endPoint.Method.Name);
+                var methodHash = Hasher.HashMethod(methodName);
                 Stub.Register<T>(methodHash, method, client.Guid);
             });
 
@@ -40,15 +46,19 @@ namespace TachyonServerRPC {
         /// <typeparam name="I">Request parameter type</typeparam>
         /// <typeparam name="O">Response data type</typeparam>
         /// <param name="clientMethod">Method which will handle the request.</param>
-        public void AddAskEndPoint<I, O>(Func<ConnectedClient, I, O> clientMethod) {
-
+        public void AddAskEndpoint<I, O>(Func<ConnectedClient, I, O> clientMethod) 
+        {
+            AddAskEndpoint(clientMethod, clientMethod.Method.Name);
+        }
+        
+        public void AddAskEndpoint<I, O>(Func<ConnectedClient, I, O> clientMethod, string methodName)
+        {
             _askEndPoints.Add((client) => {
                 Func<I, O> func = new Func<I, O>((parameters) => clientMethod.Invoke(client, parameters));
-                var methodHash = Hasher.HashMethod(clientMethod.Method.Name);
+                var methodHash = Hasher.HashMethod(methodName);
                 methodHash = AskHasher.SetAskBit(methodHash, true);
                 Stub.Register<I, O>(methodHash, func, client.Guid);
             });
-
         }
 
         /// <summary>
