@@ -10,7 +10,7 @@ namespace TachyonServerCore {
     public class HostCore {
 
         List<ConnectedClient> _clients = new List<ConnectedClient>();
-        readonly EndPointMap _endPoints;
+        public readonly EndPointMap _endPoints;
 
         public HostCore(EndPointMap endPoints) {
             _endPoints = endPoints;

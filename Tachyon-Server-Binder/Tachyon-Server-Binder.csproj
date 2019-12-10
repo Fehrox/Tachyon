@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <RootNamespace>Tachyon_Server_Binder</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Tachyon-Server-Core\Tachyon-Server-Core.csproj" />
+      <ProjectReference Include="..\Tachyon-Server-RPC\Tachyon-Server-RPC.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="LamarCompiler" Version="2.1.0" />
+    </ItemGroup>
+
+</Project>

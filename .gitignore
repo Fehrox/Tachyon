@@ -16,6 +16,8 @@ Tachyon-Server-IO/bin/
 Tachyon-Server-IO/obj/
 Tachyon-Server-RPC/bin/
 Tachyon-Server-RPC/obj/
+Tachyon-Server-Binder/bin/
+Tachyon-Server-Binder/obj/
 Tachyon-Unity/.vs/
 Tachyon-Unity/.vscode/
 Tachyon-Unity/Build/
@@ -25,3 +27,4 @@ Tachyon-Unity/Temp/
 ClientProgram/Properties/
 Tachyon-Unity/ProjectSettings/
 .vs/
+.idea/
