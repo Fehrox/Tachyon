@@ -1,13 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\Interop\Interop.csproj" />
     <ProjectReference Include="..\Tachyon-Common\Tachyon-Common.csproj" />
     <ProjectReference Include="..\Tachyon-Client-IO\Tachyon-Client-IO.csproj" />
     <ProjectReference Include="..\Tachyon-Client-RPC\Tachyon-Client-RPC.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <PropertyGroup>

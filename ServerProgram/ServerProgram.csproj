@@ -9,10 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Interop\Interop.csproj" />
     <ProjectReference Include="..\Tachyon-Server-Core\Tachyon-Server-Core.csproj" />
     <ProjectReference Include="..\Tachyon-Server-IO\Tachyon-Server-IO.csproj" />
     <ProjectReference Include="..\Tachyon-Server-RPC\Tachyon-Server-RPC.csproj" />

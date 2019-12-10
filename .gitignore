@@ -4,6 +4,8 @@ packages/
 ServerProgram/.vs/
 ServerProgram/bin/
 ServerProgram/obj/
+Interop/bin/
+Interop/obj/
 Tachyon-Client-IO/bin/
 Tachyon-Client-IO/obj/
 Tachyon-Client-RPC/bin/
