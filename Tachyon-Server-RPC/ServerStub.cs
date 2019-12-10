@@ -3,29 +3,31 @@ using TachyonClientCommon;
 using TachyonCommon;
 using TachyonCommon.Hash;
 
-namespace TachyonServerRPC {
-    public class ServerStub : Stub {
-
-        public ServerStub(ISerializer serializer) 
-            : base(serializer) 
+namespace TachyonServerRPC
+{
+    public class ServerStub : Stub
+    {
+        public ServerStub(ISerializer serializer)
+            : base(serializer)
         {
-
         }
 
         public void Register<T>(
-            Int16 methodHash, 
-            Action<T> method, 
+            short methodHash,
+            Action<T> method,
             string guid
-        ) {
+        )
+        {
             methodHash = DistinguishClientHash(methodHash, guid);
             Register<T>(methodHash, method);
         }
 
         public void Register<I, O>(
-            Int16 methodHash, 
-            Func<I, O> func, 
+            short methodHash,
+            Func<I, O> func,
             string guid
-        ) {
+        )
+        {
             methodHash = DistinguishClientHash(methodHash, guid);
             Register<I, O>(methodHash, func);
         }
@@ -34,8 +36,9 @@ namespace TachyonServerRPC {
             byte[] data,
             short argStartIndex,
             string guid
-        ) {
-            var methodHash = BitConverter.ToInt16(new[] { data[0], data[1] });
+        )
+        {
+            var methodHash = BitConverter.ToInt16(new[] {data[0], data[1]});
             methodHash = DistinguishClientHash(methodHash, guid);
             var methodHashBytes = BitConverter.GetBytes(methodHash);
             data[0] = methodHashBytes[0];
@@ -50,12 +53,13 @@ namespace TachyonServerRPC {
         /// <param name="methodHash">Unmodified method hash</param>
         /// <param name="guid">Client connection Guid.</param>
         /// <returns>Method Has unique to give clieknt Guid.</returns>
-        Int16 DistinguishClientHash(
-            Int16 methodHash, 
+        private short DistinguishClientHash(
+            short methodHash,
             string guid
-        ) {
+        )
+        {
             var hasher = new Hasher();
-            return (short)(methodHash + hasher.HashMethod(guid));
+            return (short) (methodHash + hasher.HashMethod(guid));
         }
     }
 }

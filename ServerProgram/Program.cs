@@ -6,10 +6,10 @@ using TachyonServerBinder;
 
 namespace ServerProgram
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args) {
-
+        private static void Main(string[] args)
+        {
             var endPointMap = new EndPointMap(new JsonSerializer());
             var server = new HostCore(endPointMap);
             var service = new ExampleService();
@@ -22,10 +22,6 @@ namespace ServerProgram
                 service.Update();
                 Console.ReadKey();
             }
-
-            
         }
-
     }
-
 }

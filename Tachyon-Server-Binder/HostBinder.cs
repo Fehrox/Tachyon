@@ -20,18 +20,18 @@ namespace TachyonServerBinder
         {
             void Bind(HostCore connection, TService service, EndPointMap endPointMap);
         }
-        
+
         public static void Bind(HostCore connection, TService service, EndPointMap map)
         {
-            Bind(connection, service.GetType(), service, map);   
+            Bind(connection, service.GetType(), service, map);
         }
 
         public static void Bind(HostCore connection, Type serviceInterfaceType, TService service, EndPointMap map)
         {
-            if(!serviceInterfaceType.IsInterface)
+            if (!serviceInterfaceType.IsInterface)
                 throw new ArgumentException($"{serviceInterfaceType.Name} is not an interface. " +
-                    $"Use interfaces to define the communication contracts, rather than binding a class. ");
-            
+                                            $"Use interfaces to define the communication contracts, rather than binding a class. ");
+
             var generator = new AssemblyGenerator();
             generator.ReferenceAssembly(typeof(TService).Assembly);
             generator.ReferenceAssembly(serviceInterfaceType.Assembly);
@@ -90,7 +90,6 @@ namespace TachyonServerBinder
 
 //                var writer = (x as SourceWriter).Code();
 //                Console.WriteLine(writer);
-
             });
 
             var binder = assembly.GetExportedTypes().Single();
@@ -116,9 +115,9 @@ namespace TachyonServerBinder
         {
             var requestType = serviceMethod.GetParameters().Single().ParameterType;
             var methodName = serviceMethod.Name;
-            
+
             x.Write($"map.AddSendEndpoint<{requestType.NameInCode()}>(" +
-                $"(c,m) => {methodName}(m), \"{methodName}\");");
+                    $"(c,m) => {methodName}(m), \"{methodName}\");");
         }
 
         private static void GenerateBindAskEndpoint(MethodInfo serviceMethod, ISourceWriter x)

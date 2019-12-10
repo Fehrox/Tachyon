@@ -4,30 +4,34 @@ using System.Linq;
 using TachyonClientCommon;
 using TachyonCommon.Hash;
 
-namespace TachyonCommon {
-    public class Asks {
+namespace TachyonCommon
+{
+    public class Asks
+    {
+        private const int ASK_BIT_INDEX = 0;
+        private SortedList<short, Stub.RemoteMethod> _pendingResponses = new SortedList<short, Stub.RemoteMethod>();
+        private List<short> _pendingRequests = new List<short>();
+        private ISerializer _serializer;
 
-        const int ASK_BIT_INDEX = 0;
-        SortedList<Int16, Stub.RemoteMethod> _pendingResponses = new SortedList<Int16, Stub.RemoteMethod>();
-        List<Int16> _pendingRequests = new List<Int16>();
-        ISerializer _serializer;
-
-        public Asks(Stub stub, ISerializer serializer) {
+        public Asks(Stub stub, ISerializer serializer)
+        {
             _serializer = serializer;
         }
 
-        public bool IsAskPacket(byte[] bytes) {
+        public bool IsAskPacket(byte[] bytes)
+        {
             return ConvertByteToBitAddres(bytes[0], ASK_BIT_INDEX);
         }
 
-        public void Replied(byte[] response) {
-
-            short methodHashSize = sizeof(Int16),
-                  callbackIdSize = sizeof(Int16);
+        public void Replied(byte[] response)
+        {
+            short methodHashSize = sizeof(short),
+                callbackIdSize = sizeof(short);
 
             var callingMethodHash = BitConverter.ToInt16(response, 0);
             var isRegistedRequest = _pendingRequests.Contains(callingMethodHash);
-            if (isRegistedRequest) {
+            if (isRegistedRequest)
+            {
                 var callbackId = BitConverter.ToInt16(response, methodHashSize);
                 var request = _pendingResponses[callbackId];
 
@@ -40,38 +44,39 @@ namespace TachyonCommon {
 
                 request.Method.Invoke(request.Target, arg);
                 _pendingRequests.Remove(callingMethodHash);
-            } else {
+            }
+            else
+            {
                 Console.WriteLine("Recieved response to " +
-                    "unregestered request " + callingMethodHash);
+                                  "unregestered request " + callingMethodHash);
             }
         }
 
-        public byte[] PackReply(byte[] data, object reply) {
-
+        public byte[] PackReply(byte[] data, object reply)
+        {
             //var replyJson = _serializer.SerializeObject(reply);
             //var replyArgData = Encoding.ASCII.GetBytes(replyJson);
             var replyArgData = _serializer.SerializeObject(reply);
 
-            var methodHashSize = sizeof(Int16);
-            var callbackIdSize = sizeof(Int16);
+            var methodHashSize = sizeof(short);
+            var callbackIdSize = sizeof(short);
             var headerBytes = data.Take(methodHashSize + callbackIdSize);
 
             var replyData = headerBytes.Concat(replyArgData);
             return replyData.ToArray();
         }
 
-        public byte[] PackAsk<T>(byte[] data, Action<T> reply) {
-
+        public byte[] PackAsk<T>(byte[] data, Action<T> reply)
+        {
             var methodHash = BitConverter.ToInt16(data, 0);
             methodHash = AskHasher.SetAskBit(methodHash, true);
             var methodHashBytes = BitConverter.GetBytes(methodHash);
             _pendingRequests.Add(methodHash);
 
-            var callbackId = _pendingResponses.Any() ?
-                (_pendingResponses.Last().Key + 1) % short.MaxValue : 0;
+            var callbackId = _pendingResponses.Any() ? (_pendingResponses.Last().Key + 1) % short.MaxValue : 0;
             var callbackIdBytes = BitConverter.GetBytes(callbackId);
             var callback = new Stub.RemoteMethod(reply.Method, reply.Target);
-            _pendingResponses.Add((short)callbackId, callback);
+            _pendingResponses.Add((short) callbackId, callback);
 
             var dataBody = data.Skip(methodHashBytes.Length).ToArray();
 
@@ -92,9 +97,9 @@ namespace TachyonCommon {
         //}
 
 
-
-        bool ConvertByteToBitAddres(byte byteToConvert, int bitToReturn) {
-            int mask = 1 << bitToReturn;
+        private bool ConvertByteToBitAddres(byte byteToConvert, int bitToReturn)
+        {
+            var mask = 1 << bitToReturn;
             return (byteToConvert & mask) == mask;
         }
     }

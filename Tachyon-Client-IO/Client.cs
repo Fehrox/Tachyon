@@ -4,45 +4,49 @@ using System.Net.Sockets;
 using System.Threading;
 using TachyonCommon;
 
-namespace TachyonClientIO 
+namespace TachyonClientIO
 {
-
-    public class Client : IClient 
+    public class Client : IClient
     {
-
-        bool _connected = false;
+        private bool _connected = false;
         //AutoResetEvent _wait = new AutoResetEvent(false);
 
         public RecievedEvent OnRecieved { get; set; }
-        
+
         public ConnectionEvent OnDisconnected { get; set; }
         public ConnectionEvent OnConnected { get; set; }
         public ConnectionEvent OnFailedToConnect { get; set; }
 
-        NetworkStream _stream;
-        PacketIO _packetIO;
+        private NetworkStream _stream;
+        private PacketIO _packetIO;
 
-        public void Connect(string host, int port) {
+        public void Connect(string host, int port)
+        {
             var client = new TcpClient();
             client.BeginConnect(host, port, new AsyncCallback(Connected), client);
         }
 
-        void Connected(IAsyncResult ar) {
-            var client = (ar.AsyncState as TcpClient);
+        private void Connected(IAsyncResult ar)
+        {
+            var client = ar.AsyncState as TcpClient;
             client.EndConnect(ar);
 
-            if (client.Connected) {
+            if (client.Connected)
+            {
                 _stream = client.GetStream();
                 _packetIO = new PacketIO(_stream);
                 _connected = true;
                 OnConnected?.Invoke();
                 new Thread(() => { Recieve(client); }).Start();
-            } else {
+            }
+            else
+            {
                 OnFailedToConnect?.Invoke();
             }
         }
 
-        public void Send(byte[] data) {
+        public void Send(byte[] data)
+        {
             if (!_connected) return;
 
             _packetIO.Send(data);
@@ -59,12 +63,14 @@ namespace TachyonClientIO
         //    stream.EndWrite(ar);
         //}
 
-        void Recieve(TcpClient client) {
+        private void Recieve(TcpClient client)
+        {
             var stream = client.GetStream();
 
-            while (_connected) {
-                if (stream.CanRead) {
-                    try {
+            while (_connected)
+                if (stream.CanRead)
+                    try
+                    {
                         var recievedBytes = _packetIO.Recieve();
                         OnRecieved?.Invoke(recievedBytes);
                         //int incomingBytes = stream.ReadByte();
@@ -78,14 +84,13 @@ namespace TachyonClientIO
                         //        Stream = stream
                         //    });
                         //_wait.WaitOne();
-                    } catch (IOException) {
+                    }
+                    catch (IOException)
+                    {
                         _connected = false;
                     }
-                }
-            }
 
             OnDisconnected?.Invoke();
-            
         }
 
         //private void Recieved(IAsyncResult ar) {
@@ -104,11 +109,10 @@ namespace TachyonClientIO
         //    }
         //}
 
-        private class ReadResult {
+        private class ReadResult
+        {
             public byte[] Buffer;
             public NetworkStream Stream;
         }
-
     }
-
 }

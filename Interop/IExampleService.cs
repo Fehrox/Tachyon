@@ -13,9 +13,9 @@ namespace Interop
 
         void Log(LogDTO log);
     }
-    
-    public class LogDTO {
+
+    public class LogDTO
+    {
         public string Message;
     }
-    
 }

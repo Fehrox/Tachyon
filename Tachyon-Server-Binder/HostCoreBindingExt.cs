@@ -8,10 +8,10 @@ namespace TachyonServerBinder
     public static class HostCoreBindingExt
     {
         public static void Bind<TService>(
-            this HostCore host, 
+            this HostCore host,
             TService service
-        ) where TService : class {
-
+        ) where TService : class
+        {
             if (!service.GetType().IsInterface)
             {
                 var interfaceType = service.GetType().GetInterfaces()
@@ -22,7 +22,6 @@ namespace TachyonServerBinder
             {
                 HostBinder<TService>.Bind(host, service, host._endPoints);
             }
-
         }
     }
 }

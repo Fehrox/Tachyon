@@ -6,30 +6,31 @@ using System.Net.Sockets;
 using System.Threading;
 using TachyonCommon;
 
-namespace TachyonServerIO 
+namespace TachyonServerIO
 {
-
-    public class Connection : IConnection 
+    public class Connection : IConnection
     {
-        PacketIO _packetIO;
+        private PacketIO _packetIO;
 
         //const int CHUNK_SIZE = 254;
-        bool _connected = true;
+        private bool _connected = true;
         //AutoResetEvent _recieveLock = new AutoResetEvent(false);
         //List<byte[]> _recieveBuffer = new List<byte[]>();
 
         public RecievedEvent OnRecieved { get; set; }
         public ConnectionEvent OnDisconnected { get; set; }
 
-        TcpClient _client;
+        private TcpClient _client;
         //Queue<string> _sendQueue = new Queue<string>();
 
-        public Connection(TcpClient client) {
+        public Connection(TcpClient client)
+        {
             _packetIO = new PacketIO(client.GetStream());
             _client = client;
         }
 
-        public void Start() {
+        public void Start()
+        {
             var stream = _client.GetStream();
             //SendConnectAck(stream);
             new Thread(() => Read(stream)).Start();
@@ -39,12 +40,13 @@ namespace TachyonServerIO
         //    stream.Write(new byte[] { 0x0 }, 0, 1);
         //}
 
-        void Read(object streamObj) {
+        private void Read(object streamObj)
+        {
             var stream = streamObj as NetworkStream;
-            while (_connected) {
-                if (stream.CanRead && stream.DataAvailable) {
-                    try {
-
+            while (_connected)
+                if (stream.CanRead && stream.DataAvailable)
+                    try
+                    {
                         var recievedBytes = _packetIO.Recieve();
                         OnRecieved(recievedBytes);
                         //_recieveBuffer.Clear();
@@ -69,15 +71,13 @@ namespace TachyonServerIO
                         //    .SelectMany(chunk => chunk)
                         //    .ToArray();
                         //OnRecieved(recievedBytes);
-
-                    } catch (IOException) {
+                    }
+                    catch (IOException)
+                    {
                         _connected = false;
                     }
-                }
-            }
 
             OnDisconnected?.Invoke();
-
         }
 
         //void Recieved(IAsyncResult ar) {
@@ -93,12 +93,16 @@ namespace TachyonServerIO
 
         //}
 
-        public void Send(byte[] data) {
-
-            try {
-                if (!_client.Connected) {
+        public void Send(byte[] data)
+        {
+            try
+            {
+                if (!_client.Connected)
+                {
                     _connected = false;
-                } else {
+                }
+                else
+                {
                     var stream = _client.GetStream();
 
                     _packetIO.Send(data);
@@ -124,14 +128,16 @@ namespace TachyonServerIO
 
                     //}
                 }
-            } catch (IOException) {
+            }
+            catch (IOException)
+            {
                 _connected = false;
             }
-            
         }
 
-        byte[] Slice(byte[] buffer, int index, int length) {
-            byte[] slice = new byte[length];
+        private byte[] Slice(byte[] buffer, int index, int length)
+        {
+            var slice = new byte[length];
             Array.Copy(buffer, index, slice, 0, length);
             return slice;
         }
@@ -140,6 +146,5 @@ namespace TachyonServerIO
         //    public byte[] Buffer;
         //    public NetworkStream Stream;
         //}
-
     }
 }

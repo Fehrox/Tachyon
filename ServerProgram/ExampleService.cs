@@ -6,19 +6,18 @@ namespace ServerProgram
 {
     public class ExampleService : IExampleService
     {
-        
         public event Action<LogDTO> OnLogWarning;
-        
+
         public event Action<LogDTO> OnLog;
 
-        int _i = 0;
-        
+        private int _i = 0;
+
         public void Update()
         {
-
-            var log = new LogDTO {
+            var log = new LogDTO
+            {
                 //Message = "Short." };
-                Message = "This is some message " + (_i++) + "! " +
+                Message = "This is some message " + _i++ + "! " +
                           "But it's really really long, because we need to " +
                           "test if the message can wrap it's buffer size " +
                           "and still be correctly reconstructed at the other " +
@@ -32,12 +31,12 @@ namespace ServerProgram
                           "are built, they support this kind of thing at the expense " +
                           "of performance with smaller data packets. Not Tachyon, " +
                           "tachyon can send and recieve those tiny packets faster " +
-                          "than the speed of light, and still handle the big ones."};
+                          "than the speed of light, and still handle the big ones."
+            };
             if (_i % 2 == 0)
                 OnLog?.Invoke(log);
             else
-                OnLogWarning?.Invoke(new LogDTO { Message = "." });
-            
+                OnLogWarning?.Invoke(new LogDTO {Message = "."});
         }
 
         public Task<long> Ping(long clientTime)
@@ -49,6 +48,5 @@ namespace ServerProgram
         {
             Console.WriteLine(log.Message);
         }
-        
     }
 }

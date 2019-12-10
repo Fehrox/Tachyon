@@ -5,11 +5,11 @@ using System.Text;
 namespace TachyonClientIO
 {
     public delegate void RecievedEvent(byte[] data);
+
     public delegate void ConnectionEvent();
 
     public interface IClient
     {
-
         void Connect(string host, int port);
         void Send(byte[] data);
 
@@ -17,6 +17,5 @@ namespace TachyonClientIO
         ConnectionEvent OnDisconnected { get; set; }
         ConnectionEvent OnConnected { get; set; }
         ConnectionEvent OnFailedToConnect { get; set; }
-
     }
 }
