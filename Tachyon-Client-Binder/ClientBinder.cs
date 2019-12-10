@@ -61,9 +61,9 @@ namespace TachyonClientBinder
                 
                 x.FinishBlock(); // Finish Class/Namespace
 
-                var writer = (x as SourceWriter);
-                var code = writer.Code();
-                Console.WriteLine(code);
+//                var writer = (x as SourceWriter);
+//                var code = writer.Code();
+//                Console.WriteLine(code);
             });
             
             var binderType = assembly.GetExportedTypes().Single();
