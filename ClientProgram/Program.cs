@@ -2,7 +2,9 @@
 using TachyonClientRPC;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Interop;
+using TachyonClientBinder;
 
 namespace ClientProgram
 {
@@ -18,22 +20,22 @@ namespace ClientProgram
             client.OnDisconnected += () => Console.WriteLine("Disconnected");
             client.Connect("localhost", 13);
 
-            //client.OnRecieved += (bytes) => {
-            //    var str = Encoding.ASCII.GetString(bytes);
-            //    Console.WriteLine(str);
-            //};
-
-            client.On<LogDTO>(HandleOnLog);
-            client.On<LogDTO>(HandleOnLogWarning);
-
+            var service = client.Bind<IExampleService>();
+            
+            service.OnLog += HandleOnLog;
+            service.OnLogWarning += HandleOnLogWarning;
+            
+            Console.WriteLine("Ready to send.");
             var i = 0;
             while (true)
             {
                 Console.ReadKey();
 
+                Console.WriteLine("Sending!");
                 _sw.Restart();
-                client.Ask<long>("Ping", Pong, DateTime.Now.Ticks);
-                client.Send("Log", new LogDTO {Message = "Console speaks! " + i++});
+                var ping = service.Ping(DateTime.Now.Ticks);
+                Task.Run(() => Pong(ping.Result));
+                service.Log(new LogDTO {Message = "Console speaks! " + i++});
             }
         }
 

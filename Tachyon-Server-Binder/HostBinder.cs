@@ -62,9 +62,9 @@ namespace TachyonServerBinder
                 // Methods
                 // Bind()
                 x.Write($"BLOCK:public void Bind(" +
-                        $"{typeof(HostCore).Name} connection, " +
-                        $"{typeof(TService).Name} service, " +
-                        $"{typeof(EndPointMap).Name} endPoints )");
+                        $"{typeof(HostCore).NameInCode()} connection, " +
+                        $"{typeof(TService).NameInCode()} service, " +
+                        $"{typeof(EndPointMap).NameInCode()} endPoints )");
                 x.Write("_connection = connection;");
                 x.Write("_service = service;");
                 x.Write("BindClientCallbacks();");
@@ -131,7 +131,7 @@ namespace TachyonServerBinder
             var methodName = serviceMethod.Name;
 
             x.Write($"map.AddAskEndpoint<{requestType.NameInCode()},{taskResponseType.NameInCode()}>(" +
-                    $"(c,m) => {methodName}(m).Result, \"{methodName}\");");
+                $"(c,m) => {methodName}(m).Result, \"{methodName}\");");
         }
 
         private static void GenerateBindClientCallbacks(Type serviceType, ISourceWriter x)
@@ -139,7 +139,8 @@ namespace TachyonServerBinder
             foreach (var eventInfo in serviceType.GetEvents())
             {
                 var eventName = eventInfo.Name;
-                x.Write($"_service.{eventName} += (p) => _connection.Broadcast(\"Handle{eventName}\", p);");
+                x.Write($"_service.{eventName} += " +
+                    $"(p) => _connection.Broadcast(\"Handle{eventName}\", p);");
             }
         }
 

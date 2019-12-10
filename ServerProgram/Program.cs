@@ -11,10 +11,10 @@ namespace ServerProgram
         private static void Main(string[] args)
         {
             var endPointMap = new EndPointMap(new JsonSerializer());
-            var server = new HostCore(endPointMap);
+            var host = new HostCore(endPointMap);
             var service = new ExampleService();
-            server.Bind(service);
-            server.Start();
+            host.Bind(service);
+            host.Start();
             Console.WriteLine("Server Started.");
 
             while (true)
