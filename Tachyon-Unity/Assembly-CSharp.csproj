@@ -61,7 +61,10 @@
      <Compile Include="Assets\Interop\IExampleService.cs" />
      <Compile Include="Assets\Interop\JsonSerializer.cs" />
      <Compile Include="Assets\Modules\Tachyon\Bindings\IExampleServiceClientBinding.cs" />
+     <Compile Include="Assets\Modules\Tachyon\Coroutiner.cs" />
      <Compile Include="Assets\Modules\Tachyon\TachyonUnityConnection.cs" />
+     <Compile Include="Assets\Modules\Tachyon\TaskExt.cs" />
+     <Compile Include="Assets\Modules\Tachyon\UnityClientBindingExt.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
@@ -266,8 +269,8 @@
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/opt/unity/2019.2.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
  </Reference>
- <Reference Include="Tachyon-Common">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Tachyon/Tachyon-Common.dll</HintPath>
+ <Reference Include="Newtonsoft.Json">
+ <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Json/Newtonsoft.Json.dll</HintPath>
  </Reference>
  <Reference Include="Tachyon-Client-IO">
  <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Tachyon/Tachyon-Client-IO.dll</HintPath>
@@ -275,8 +278,8 @@
  <Reference Include="Tachyon-Client-RPC">
  <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Tachyon/Tachyon-Client-RPC.dll</HintPath>
  </Reference>
- <Reference Include="Newtonsoft.Json">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Json/Newtonsoft.Json.dll</HintPath>
+ <Reference Include="Tachyon-Common">
+ <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Tachyon/Tachyon-Common.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>/opt/unity/2019.2.13f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

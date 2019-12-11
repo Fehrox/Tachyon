@@ -279,8 +279,8 @@
  <Reference Include="UnityEditor.LinuxStandalone.Extensions">
  <HintPath>/opt/unity/2019.2.13f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
  </Reference>
- <Reference Include="Tachyon-Common">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Tachyon/Tachyon-Common.dll</HintPath>
+ <Reference Include="Newtonsoft.Json">
+ <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Json/Newtonsoft.Json.dll</HintPath>
  </Reference>
  <Reference Include="Tachyon-Client-IO">
  <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Tachyon/Tachyon-Client-IO.dll</HintPath>
@@ -288,8 +288,8 @@
  <Reference Include="Tachyon-Client-RPC">
  <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Tachyon/Tachyon-Client-RPC.dll</HintPath>
  </Reference>
- <Reference Include="Newtonsoft.Json">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Json/Newtonsoft.Json.dll</HintPath>
+ <Reference Include="Tachyon-Common">
+ <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Assets/Modules/Tachyon/Tachyon-Common.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
  <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>

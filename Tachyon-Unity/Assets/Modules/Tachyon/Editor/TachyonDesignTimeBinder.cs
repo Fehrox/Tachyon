@@ -157,7 +157,7 @@ public static class TachyonDesignTimeBinder
         var currentDirectory = new FileInfo(".");
         var files = Directory.GetFiles(
             currentDirectory.FullName,
-            "Tachyon-Binder",
+            execFileName,
             SearchOption.AllDirectories);
     
         if (!files.Any())
