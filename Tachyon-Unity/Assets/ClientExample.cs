@@ -8,20 +8,20 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Client))]
-public class TachyonClient : MonoBehaviour {
+[RequireComponent(typeof(TachyonUnityConnection))]
+public class ClientExample : MonoBehaviour {
 
     [SerializeField]
     Text _text = null;
 
-    RPCClient _client;
+    ClientRpc _client;
 
     static System.Diagnostics.Stopwatch _sw = new System.Diagnostics.Stopwatch();
 
     public void Start() {
 
-        var clientCore = GetComponent<Client>();
-        _client = new RPCClient(clientCore, new JsonSerializer());
+        var clientCore = GetComponent<TachyonUnityConnection>();
+        _client = new ClientRpc(clientCore, new JsonSerializer());
 
         _client.OnConnected += () => Debug.Log("Connected to server.");
         _client.OnFailedToConnect += () => Debug.Log("FailedToConnect");
@@ -29,21 +29,22 @@ public class TachyonClient : MonoBehaviour {
         _client.Connect("127.0.0.1", 13);
 
         _client.OnRecieved += OnRecieved;
-        _client.On<LogDTO>(Log);
-        _client.On<LogDTO>(LogWarning);
+        _client.On<LogDTO>(HandleOnLog);
+        _client.On<LogDTO>(HandleOnLogWarning);
     }
 
-    private void LogWarning(LogDTO message) {
+    private void HandleOnLogWarning(LogDTO message) {
         _text.text += "Warning: " + message.Message + "\n";
     }
 
-    public void Log(LogDTO message) {
+    public void HandleOnLog(LogDTO message) {
         _text.text += message.Message + "\n";
     }
 
     public void OnRecieved(byte[] bytes) {
         var str = Encoding.ASCII.GetString(bytes);
-        _text.text += str + "\n";
+        Console.WriteLine("Received: " + str);
+//        _text.text += str + "\n";
     }
 
     public void Send() {
@@ -56,9 +57,9 @@ public class TachyonClient : MonoBehaviour {
         _client.Ask<long>("Ping", Pong, DateTime.Now.Ticks);
     }
 
-    private static void Pong(long ticks) {
-        Debug.Log("Time to server: " + new TimeSpan(ticks).TotalMilliseconds + "ms");
-        Debug.Log("Round Trip: " + _sw.ElapsedMilliseconds + "ms");
+    private void Pong(long ticks) {
+        _text.text += "Time to server: " + new TimeSpan(ticks).TotalMilliseconds + "ms" + "\n";
+        _text.text += "Round Trip: " + _sw.ElapsedMilliseconds + "ms" + "\n";
         _sw.Stop();
     }
 

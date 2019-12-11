@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Client : MonoBehaviour, IClient {
+public class TachyonUnityConnection : MonoBehaviour, IClient {
 
     public RecievedEvent OnRecieved { get; set; }
 
