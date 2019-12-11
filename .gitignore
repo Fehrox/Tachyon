@@ -41,3 +41,7 @@ Tachyon-Unity/Logs/
 
 .vs/
 .idea/
+
+Tachyon-Binder/bin
+Tachyon-Binder/obj
+

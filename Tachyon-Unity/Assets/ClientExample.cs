@@ -1,12 +1,9 @@
 ﻿using TachyonClientRPC;
 using UnityEngine.UI;
-using TachyonCommon;
 using UnityEngine;
 using System.Text;
 using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+using Interop;
 
 [RequireComponent(typeof(TachyonUnityConnection))]
 public class ClientExample : MonoBehaviour {
@@ -27,6 +24,9 @@ public class ClientExample : MonoBehaviour {
         _client.OnFailedToConnect += () => Debug.Log("FailedToConnect");
         _client.OnDisconnected += () => Debug.Log("Disconnected");
         _client.Connect("127.0.0.1", 13);
+
+        
+//        var exampleController = new ExampleController();
 
         _client.OnRecieved += OnRecieved;
         _client.On<LogDTO>(HandleOnLog);
@@ -63,36 +63,4 @@ public class ClientExample : MonoBehaviour {
         _sw.Stop();
     }
 
-    internal class JsonSerializer : ISerializer {
-
-        public object[] DeserializeObject(byte[] obj, Type[] t) {
-            var argJsonStr = Encoding.ASCII.GetString(obj);
-            var jObj = JsonConvert.DeserializeObject(argJsonStr);
-            if (jObj is JArray) {
-
-                var jObjArr = jObj as JArray;
-                List<object> objs = new List<object>();
-                for (int i = 0; i < jObjArr.Count; i++)
-                    objs.Add(jObjArr[i].ToObject(t[i]));
-
-                return objs.ToArray();
-            } else {
-                return new[] { jObj };
-            }
-        }
-
-        public byte[] SerializeObject<T>(T obj) {
-            var replyJson = JsonConvert.SerializeObject(obj);
-            var replyArgData = Encoding.ASCII.GetBytes(replyJson);
-            return replyArgData;
-        }
-
-    }
-
-
-}
-
-public class LogDTO {
-    //[JsonProperty("msg")]
-    public string Message;
 }

@@ -22,7 +22,7 @@ namespace TachyonClientRPC
         public ConnectionEvent OnDisconnected
         {
             get => _client.OnDisconnected;
-            set => _client.OnDisconnected = value;
+            set => _client.OnDisconnected = value; 
         }
 
         public ConnectionEvent OnConnected
