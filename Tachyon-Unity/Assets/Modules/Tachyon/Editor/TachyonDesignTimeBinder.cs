@@ -85,8 +85,15 @@ public static class TachyonDesignTimeBinder
         }
     }
 
-    private static void ProcessStart(FileInfo executableFile, FileInfo interfaceFile, DirectoryInfo outputDirectory)
-    {
+    private static void ProcessStart(
+        FileInfo executableFile, 
+        FileInfo interfaceFile, 
+        DirectoryInfo outputDirectory
+    ) {
+
+        var canRun = executableFile != null && interfaceFile != null && outputDirectory != null; 
+        if(!canRun) return;
+        
         var execFile = executableFile.FullName;
         ProcessStartInfo startInfo;
         
@@ -134,6 +141,19 @@ public static class TachyonDesignTimeBinder
 
     private static FileInfo FindBinder()
     {
+
+        var execFileName = String.Empty;
+        
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+            execFileName = "Tachyon-Binder-Win.exe";
+        } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+            execFileName = "Tachyon-Binder-Linux";
+        } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+            execFileName = "Tachyon-Binder-OSX";
+        } else {
+            throw new PlatformNotSupportedException();
+        }
+        
         var currentDirectory = new FileInfo(".");
         var files = Directory.GetFiles(
             currentDirectory.FullName,

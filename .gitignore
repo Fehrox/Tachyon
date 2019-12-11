@@ -39,9 +39,9 @@ Tachyon-Unity/Temp/
 Tachyon-Unity/ProjectSettings/
 Tachyon-Unity/Logs/
 
-.vs/
-.idea/
-
 Tachyon-Binder/bin
 Tachyon-Binder/obj
+
+.vs/
+.idea/
 
