@@ -3,16 +3,15 @@ using TachyonClientRPC;
 using System;
 using Interop;
 using TachyonClientBinder;
-using Client = TachyonClientRPC.Client;
 
 namespace ClientProgram
 {
     internal static class Program
     {
 
-        private static void Main(string[] args)
+        private static void Main()
         {
-            var client = new Client(new TachyonClientIO.Client(), new JsonSerializer());
+            var client = new ClientRpc(new Client(), new JsonSerializer());
             client.OnConnected += () => Console.WriteLine("Connected to server.");
             client.OnFailedToConnect += () => Console.WriteLine("FailedToConnect");
             client.OnDisconnected += () => Console.WriteLine("Disconnected");

@@ -6,7 +6,7 @@ using TachyonCommon.Hash;
 
 namespace TachyonClientRPC
 {
-    public class Client
+    public class ClientRpc
     {
         private IClient _client;
         private Stub _stub;
@@ -37,7 +37,7 @@ namespace TachyonClientRPC
             set => _client.OnFailedToConnect = value;
         }
 
-        public Client(IClient client, ISerializer serializer)
+        public ClientRpc(IClient client, ISerializer serializer)
         {
             _client = client;
 

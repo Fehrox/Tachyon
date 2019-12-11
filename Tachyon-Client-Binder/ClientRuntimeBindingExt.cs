@@ -4,9 +4,9 @@ namespace TachyonClientBinder
 {
     public static class ClientBindExt
     {
-        public static TService Bind<TService>(this Client client) where TService : class
+        public static TService Bind<TService>(this ClientRpc clientRpc) where TService : class
         {
-            return ClientBinder<TService>.Bind(client);
+            return ClientBinder<TService>.Bind(clientRpc);
         }
     }
 }
