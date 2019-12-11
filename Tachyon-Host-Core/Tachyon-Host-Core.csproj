@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tachyon-Server-IO\Tachyon-Server-IO.csproj" />
-    <ProjectReference Include="..\Tachyon-Server-RPC\Tachyon-Server-RPC.csproj" />
+    <ProjectReference Include="..\Tachyon-Host-IO\Tachyon-Host-IO.csproj" />
+    <ProjectReference Include="..\Tachyon-Host-RPC\Tachyon-Host-RPC.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ namespace TachyonServerRPC
 {
     public class EndPointMap
     {
-        public readonly ServerStub Stub;
+        public readonly HostStub Stub;
         public readonly ISerializer Serializer;
         public readonly AskHasher Hasher = new AskHasher();
 
@@ -17,7 +17,7 @@ namespace TachyonServerRPC
         public EndPointMap(ISerializer serializer)
         {
             Serializer = serializer;
-            Stub = new ServerStub(serializer);
+            Stub = new HostStub(serializer);
         }
 
         /// <summary>

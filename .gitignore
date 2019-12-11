@@ -4,9 +4,9 @@ ClientProgram/bin/
 ClientProgram/obj/
 ClientProgram/Properties/
 
-ServerProgram/.vs/
-ServerProgram/bin/
-ServerProgram/obj/
+HostProgram/.vs/
+HostProgram/bin/
+HostProgram/obj/
 
 Interop/bin/
 Interop/obj/
@@ -21,14 +21,14 @@ Tachyon-Client-Binder/obj/
 Tachyon-Common/bin/
 Tachyon-Common/obj/
 
-Tachyon-Server-Core/bin/
-Tachyon-Server-Core/obj/
-Tachyon-Server-IO/bin/
-Tachyon-Server-IO/obj/
-Tachyon-Server-RPC/bin/
-Tachyon-Server-RPC/obj/
-Tachyon-Server-Binder/bin/
-Tachyon-Server-Binder/obj/
+Tachyon-Host-Core/bin/
+Tachyon-Host-Core/obj/
+Tachyon-Host-IO/bin/
+Tachyon-Host-IO/obj/
+Tachyon-Host-RPC/bin/
+Tachyon-Host-RPC/obj/
+Tachyon-Host-Binder/bin/
+Tachyon-Host-Binder/obj/
 
 Tachyon-Unity/.vs/
 Tachyon-Unity/.vscode/

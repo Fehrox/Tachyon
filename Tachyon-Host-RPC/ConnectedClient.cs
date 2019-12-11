@@ -14,7 +14,7 @@ namespace TachyonServerRPC
 
         private Connection _connection;
         private AskHasher _hasher;
-        private ServerStub _stub;
+        private HostStub _stub;
         private Asks _ask;
 
         public RecievedEvent OnRecieved
@@ -31,7 +31,7 @@ namespace TachyonServerRPC
 
         public ConnectedClient(
             TcpClient client,
-            ServerStub stub,
+            HostStub stub,
             AskHasher hasher,
             ISerializer serializer
         )

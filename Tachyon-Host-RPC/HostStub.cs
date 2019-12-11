@@ -5,9 +5,9 @@ using TachyonCommon.Hash;
 
 namespace TachyonServerRPC
 {
-    public class ServerStub : Stub
+    public class HostStub : Stub
     {
-        public ServerStub(ISerializer serializer)
+        public HostStub(ISerializer serializer)
             : base(serializer)
         {
         }

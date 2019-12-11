@@ -14,7 +14,7 @@ using TachyonServerRPC;
 
 namespace TachyonServerBinder
 {
-    public static class HostBinder<TService> where TService : class
+    public static class HostRuntimeBinder<TService> where TService : class
     {
         public interface IBindable
         {

@@ -12,15 +12,15 @@ namespace TachyonClientBinder
     {
         public interface IBindable
         {
-            void Bind(RPCClient client);
+            void Bind(Client client);
         }
         
-        public static TService Bind(RPCClient client)
+        public static TService Bind(Client client)
         {
             var generator = new AssemblyGenerator();
             generator.ReferenceAssemblyContainingType<TService>();
             generator.ReferenceAssemblyContainingType<IBindable>();
-            generator.ReferenceAssemblyContainingType<RPCClient>();
+            generator.ReferenceAssemblyContainingType<Client>();
             generator.ReferenceAssembly(typeof(Task<>).Assembly);
             generator.ReferenceAssembly(typeof(Action<>).Assembly);
 
@@ -29,7 +29,7 @@ namespace TachyonClientBinder
             {
                 x.UsingNamespace(typeof(IBindable).Namespace);
                 x.UsingNamespace(typeof(TService).Namespace);
-                x.UsingNamespace(typeof(RPCClient).Namespace);
+                x.UsingNamespace(typeof(Client).Namespace);
                 x.UsingNamespace(typeof(Task<>).Namespace);
                 x.UsingNamespace(typeof(Action<>).Namespace);
                 
@@ -42,11 +42,11 @@ namespace TachyonClientBinder
                 // Fields
                 GenerateBindEvents(x);
                 
-                x.Write($"{typeof(RPCClient).Name} _client;");
+                x.Write($"{typeof(Client).Name} _client;");
 
                 // Methods
                 // Bind()
-                x.Write($"BLOCK:public void Bind({typeof(RPCClient).NameInCode()} client)");
+                x.Write($"BLOCK:public void Bind({typeof(Client).NameInCode()} client)");
                 GenerateBindOnCallbacks(x);
                 x.Write("_client = client;");
                 x.FinishBlock(); // Finish Bind();

@@ -5,7 +5,7 @@ using TachyonServerCore;
 
 namespace TachyonServerBinder
 {
-    public static class HostCoreBindingExt
+    public static class RuntimeHostBindingExt
     {
         public static void Bind<TService>(
             this HostCore host,
@@ -16,11 +16,11 @@ namespace TachyonServerBinder
             {
                 var interfaceType = service.GetType().GetInterfaces()
                     .First(i => i.IsAssignableFrom(typeof(TService)));
-                HostBinder<TService>.Bind(host, interfaceType, service, host._endPoints);
+                HostRuntimeBinder<TService>.Bind(host, interfaceType, service, host._endPoints);
             }
             else
             {
-                HostBinder<TService>.Bind(host, service, host._endPoints);
+                HostRuntimeBinder<TService>.Bind(host, service, host._endPoints);
             }
         }
     }

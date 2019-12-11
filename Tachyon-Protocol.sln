@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerProgram", "ServerProgram\ServerProgram.csproj", "{47A1CCF8-A55C-43DA-A285-3B8D6FD6CF1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostProgram", "HostProgram\HostProgram.csproj", "{47A1CCF8-A55C-43DA-A285-3B8D6FD6CF1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tachyon-Client-IO", "Tachyon-Client-IO\Tachyon-Client-IO.csproj", "{9E0D8734-6F00-4917-8A0A-58FB9B6C6062}"
 EndProject
@@ -11,15 +11,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientProgram", "ClientProg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Client-RPC", "Tachyon-Client-RPC\Tachyon-Client-RPC.csproj", "{7B276A03-06A7-4F0F-9671-75C682FF5897}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tachyon-Server-IO", "Tachyon-Server-IO\Tachyon-Server-IO.csproj", "{C560DB14-2FBE-49BC-839F-1D71BA9FE3C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tachyon-Host-IO", "Tachyon-Host-IO\Tachyon-Host-IO.csproj", "{C560DB14-2FBE-49BC-839F-1D71BA9FE3C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tachyon-Server-RPC", "Tachyon-Server-RPC\Tachyon-Server-RPC.csproj", "{E6B76BC3-AD19-4CEF-AE33-05FDF00B15FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tachyon-Host-RPC", "Tachyon-Host-RPC\Tachyon-Host-RPC.csproj", "{E6B76BC3-AD19-4CEF-AE33-05FDF00B15FB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tachyon-Common", "Tachyon-Common\Tachyon-Common.csproj", "{12CCCED1-9889-43F8-A417-5C2D53072B68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Server-Core", "Tachyon-Server-Core\Tachyon-Server-Core.csproj", "{FF5D447D-0188-41A4-8365-3343065F0C65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Host-Core", "Tachyon-Host-Core\Tachyon-Host-Core.csproj", "{FF5D447D-0188-41A4-8365-3343065F0C65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Server-Binder", "Tachyon-Server-Binder\Tachyon-Server-Binder.csproj", "{113C7D3B-EC58-4175-8CE5-692228F3747C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Host-Binder", "Tachyon-Host-Binder\Tachyon-Host-Binder.csproj", "{113C7D3B-EC58-4175-8CE5-692228F3747C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interop", "Interop\Interop.csproj", "{DE6C4FE3-59C3-4E96-BB01-6532B9854964}"
 EndProject
