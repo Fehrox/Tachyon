@@ -82,25 +82,29 @@ namespace TachyonClientBinder
         
         private static void GenerateBindAskDispatcher(MethodInfo methodInfo, ISourceWriter x)
         {
-            var parameters = methodInfo.GetParameters();
-            var paramsStr = string.Join(
-                ",", 
-                parameters.Select(p => p.ParameterType.Name + " " + p.Name));
 
-            var paramStr = string.Join(
-                ",",
-                parameters.Select(p => p.Name));
             var returnType = methodInfo.ReturnType;
-            
-            var paramTypeStr = string.Join(
+            if(returnType.GetGenericTypeDefinition() != typeof(Task<>))
+                throw new TypeLoadException(
+                    "Return type "+returnType.Name
+                    +" should be of type Task<>.");
+
+            var parameters = methodInfo.GetParameters();
+            var paramsArgVarStr = string.Join(
+                ",", 
+                parameters.Select(p => p.ParameterType.Name + " " + p.Name+"Arg"));
+
+            var paramVarStr = string.Join(
                 ",",
-                parameters.Select(p => p.ParameterType.NameInCode()));
+                parameters.Select(p => p.Name+"Arg"));
             
-            x.Write($"BLOCK:public {returnType.NameInCode()} {methodInfo.Name}({paramsStr})");
+            var returnGenericType = returnType.GenericTypeArguments[0].NameInCode();
+            
+            x.Write($"BLOCK:public {returnType.NameInCode()} {methodInfo.Name}({paramsArgVarStr})");
             x.Write("bool finished = false;");
-            x.Write( paramTypeStr + " result = default;");
-            x.Write($"_client.Ask<{paramTypeStr}>(\"{methodInfo.Name}\"," +
-                    $"(r) => {{result = r; finished = true;}}, {paramStr});");
+            x.Write( returnGenericType + " result = default;");
+            x.Write($"_client.Ask<{returnGenericType}>(\"{methodInfo.Name}\"," +
+                    $"(r) => {{result = r; finished = true;}}, {paramVarStr});");
             x.Write("var t = Task.Run(" +
                     "() => { " +
                         "while (!finished) Task.Yield(); " +
@@ -115,10 +119,10 @@ namespace TachyonClientBinder
             var parameters = methodInfo.GetParameters();
             var paramsVarStr = string.Join(
                 ",", 
-                parameters.Select(p => p.ParameterType.Name + " " + p.Name));
+                parameters.Select(p => p.ParameterType.Name + " " + p.Name+"Arg"));
             var paramVarStr = string.Join(
                 ",",
-                parameters.Select(p => p.Name));
+                parameters.Select(p => p.Name+"Arg"));
             x.Write($"BLOCK:public void {methodInfo.Name}({paramsVarStr})");
             x.Write($"_client.Send(\"{methodInfo.Name}\", {paramVarStr});");
             x.FinishBlock();
@@ -129,7 +133,7 @@ namespace TachyonClientBinder
             foreach (var eventInfo in typeof(TService).GetEvents())
             {
                 var eventParam = eventInfo.EventHandlerType.GenericTypeArguments.Single();
-                var variableName = eventParam.NameInCode().ToLower();
+                var variableName = eventParam.NameInCode().ToLower()+"Arg";
                 var className = eventParam.NameInCode();
                 x.Write($"BLOCK:public void Handle{eventInfo.Name}({className} {variableName})");
                 x.Write($"{eventInfo.Name}?.Invoke({variableName});");
