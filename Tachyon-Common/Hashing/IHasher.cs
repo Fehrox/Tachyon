@@ -6,6 +6,6 @@ namespace TachyonCommon.Hash
 {
     public interface IHasher
     {
-        short HashMethod(string str);
+        short HashString(string str);
     }
 }

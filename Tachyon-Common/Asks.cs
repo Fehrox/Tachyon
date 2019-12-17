@@ -18,7 +18,7 @@ namespace TachyonCommon
             _serializer = serializer;
         }
 
-        public bool IsAskPacket(byte[] bytes)
+        public bool IsReplyPacket(byte[] bytes)
         {
             return ConvertByteToBitAddres(bytes[0], ASK_BIT_INDEX);
         }
@@ -39,10 +39,19 @@ namespace TachyonCommon
                 var callbackArgs = request.Method.GetParameters()
                     .Select(p => p.ParameterType)
                     .ToArray();
-                //var argJsonStr = Encoding.ASCII.GetString(argData.ToArray());
-                var arg = _serializer.DeserializeObject(argData.ToArray(), callbackArgs);
 
-                request.Method.Invoke(request.Target, arg);
+                var parameters = new List<object>();
+                if (callbackArgs.Length > 1) {
+                    throw new NotImplementedException("Handle multiple params.");
+                } else {
+                    var callbackArg = callbackArgs.First();
+                    var arg = _serializer.DeserializeObject(
+                        argData.ToArray(), 
+                        callbackArg );
+                    parameters.Add(arg);
+                }
+                
+                request.Method.Invoke(request.Target, parameters.ToArray() );
                 _pendingRequests.Remove(callingMethodHash);
             }
             else

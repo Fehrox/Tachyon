@@ -57,7 +57,7 @@ namespace TachyonClientRPC
             // TODO: Find what causes this to become null.
             if (data == null) return;
 
-            if (_ask.IsAskPacket(data))
+            if (_ask.IsReplyPacket(data))
                 _ask.Replied(data);
             else
                 _stub.Invoke(data);
@@ -65,20 +65,20 @@ namespace TachyonClientRPC
 
         public void On<T>(Action<T> clientMethod)
         {
-            var methodHash = _hasher.HashMethod(clientMethod.Method.Name);
+            var methodHash = _hasher.HashString(clientMethod.Method.Name);
             _stub.Register(methodHash, clientMethod);
         }
 
         public void Send(string method, params object[] args)
         {
-            var methodHash = _hasher.HashMethod(method);
+            var methodHash = _hasher.HashString(method);
             var sendData = _stub.PackSend(methodHash, args);
             _client.Send(sendData);
         }
 
         public void Ask<T>(string method, Action<T> reply, params object[] args)
         {
-            var methodHash = _hasher.HashMethod(method);
+            var methodHash = _hasher.HashString(method);
             var sendData = _stub.PackSend(methodHash, args);
             sendData = _ask.PackAsk(sendData, reply);
             _client.Send(sendData);

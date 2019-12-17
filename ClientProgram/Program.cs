@@ -11,7 +11,7 @@ namespace ClientProgram
 
         private static void Main()
         {
-            var client = new ClientRpc(new Client(), new JsonSerializer());
+            var client = new ClientRpc(new Client(), new ManualSerializer());
             client.OnConnected += () => Console.WriteLine("Connected to server.");
             client.OnFailedToConnect += () => Console.WriteLine("FailedToConnect");
             client.OnDisconnected += () => Console.WriteLine("Disconnected");
@@ -28,6 +28,9 @@ namespace ClientProgram
             }
         }
 
-
+        private static void ReplyMethod(bool obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

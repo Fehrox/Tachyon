@@ -1,21 +1,32 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Interop
 {
     public interface IExampleService
     {
-        event Action<LogDTO> OnLogWarning;
+        event Action<LogDto> OnLogWarning;
 
-        event Action<LogDTO> OnLog;
+        event Action<LogDto> OnLog;
 
         Task<long> Ping(long clientTime);
 
-        void Log(LogDTO log);
+        void Log(LogDto log);
     }
 
-    public class LogDTO
+    public class LogDto : IManualSerializer
     {
         public string Message;
+        
+        public byte[] Pack()
+        {
+            return Encoding.ASCII.GetBytes(Message);
+        }
+
+        public void Unpack(byte[] packedObj)
+        {
+            Message = Encoding.ASCII.GetString(packedObj);
+        }
     }
 }

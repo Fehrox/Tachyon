@@ -6,38 +6,34 @@ namespace GeneratedBindings
 {
     public class IExampleServiceClientBinding : Interop.IExampleService
     {
-        public event Action<Interop.LogDTO> OnLogWarning;
-        public event Action<Interop.LogDTO> OnLog;
+        public event Action<Interop.LogDto> OnLogWarning;
+        public event Action<Interop.LogDto> OnLog;
         ClientRpc _client;
         public void Bind(ClientRpc client)
         {
-            client.On<LogDTO>(HandleOnLogWarning);
-            client.On<LogDTO>(HandleOnLog);
+            client.On<LogDto>(HandleOnLogWarning);
+            client.On<LogDto>(HandleOnLog);
             _client = client;
         }
 
-        public void HandleOnLogWarning(LogDTO logdto)
+        public void HandleOnLogWarning(LogDto logdtoArg)
         {
-            OnLogWarning?.Invoke(logdto);
+            OnLogWarning?.Invoke(logdtoArg);
         }
 
-        public void HandleOnLog(LogDTO logdto)
+        public void HandleOnLog(LogDto logdtoArg)
         {
-            OnLog?.Invoke(logdto);
+            OnLog?.Invoke(logdtoArg);
         }
 
-        public Task<long> Ping(Int64 clientTime)
+        public Task<long> Ping(Int64 clientTimeArg)
         {
-            bool finished = false;
-            long result = default;
-            _client.Ask<long>("Ping",(r) => {result = r; finished = true;}, clientTime);
-            var t = Task.Run(() => { while (!finished) Task.Yield(); return result; });
-            return t;
+            return _client.AskTask<long>("Ping",clientTimeArg);
         }
 
-        public void Log(LogDTO log)
+        public void Log(LogDto logArg)
         {
-            _client.Send("Log", log);
+            _client.Send("Log", logArg);
         }
 
     }

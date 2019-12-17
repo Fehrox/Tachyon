@@ -6,9 +6,9 @@ namespace TachyonCommon.Hash
 {
     public class AskHasher : Hasher
     {
-        public override short HashMethod(string str)
+        public override short HashString(string str)
         {
-            var hash = base.HashMethod(str);
+            var hash = base.HashString(str);
             hash = ClearAskFlag(hash);
             return hash;
         }

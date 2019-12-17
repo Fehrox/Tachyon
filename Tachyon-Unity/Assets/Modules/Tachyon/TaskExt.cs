@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace ManualSerializer
 {
     public static class TaskExt
     {
@@ -21,8 +21,7 @@ namespace DefaultNamespace
 
         static IEnumerator WaitForTask<TOutput>(Task<TOutput> task, Action<TOutput> then)
         {
-            
-            while (task.Status == TaskStatus.Running)
+            while (task.Status != TaskStatus.RanToCompletion)
                 yield return null;
 
             if (task.IsFaulted)
@@ -30,9 +29,21 @@ namespace DefaultNamespace
                     throw task.Exception;
 
             if (!task.IsCompleted) yield break;
-            
-            TOutput result = task.Result;
-            then?.Invoke(result);
+
+            if (task.Status == TaskStatus.RanToCompletion)
+            {
+                then?.Invoke(task.Result);
+            } else {
+                Debug.LogWarning( "Task finished with " + task.Status);
+            }
+
+        }
+
+        private static async Task<TOutput> WaitAsync<TOutput>(Task<TOutput> task)
+        {
+            var result = await task;
+            UnityEngine.Debug.Log(result);
+            return result;
         }
 
         static IEnumerator WaitForTask(Task task, Action then)

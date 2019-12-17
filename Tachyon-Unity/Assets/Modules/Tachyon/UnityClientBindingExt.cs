@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using TachyonClientRPC;
 
 public static class UnityClientBindingExt 
@@ -21,4 +22,5 @@ public static class UnityClientBindingExt
 
         return service as TService;
     }
+
 }

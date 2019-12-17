@@ -35,7 +35,7 @@ namespace TachyonServerRPC
             _sendEndPoints.Add((client) =>
             {
                 var method = new Action<T>((parameters) => endPoint.Invoke(client, parameters));
-                var methodHash = Hasher.HashMethod(methodName);
+                var methodHash = Hasher.HashString(methodName);
                 Stub.Register<T>(methodHash, method, client.Guid);
             });
         }
@@ -56,7 +56,7 @@ namespace TachyonServerRPC
             _askEndPoints.Add((client) =>
             {
                 var func = new Func<I, O>((parameters) => clientMethod.Invoke(client, parameters));
-                var methodHash = Hasher.HashMethod(methodName);
+                var methodHash = Hasher.HashString(methodName);
                 methodHash = AskHasher.SetAskBit(methodHash, true);
                 Stub.Register<I, O>(methodHash, func, client.Guid);
             });

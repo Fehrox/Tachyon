@@ -50,22 +50,25 @@ namespace TachyonServerRPC
             {
                 var requestHash = new[] {data[0], data[1]};
 
-                var isAsk = _ask.IsAskPacket(data);
+                var isAsk = _ask.IsReplyPacket(data);
                 const short METHOD_HEADER = 2, CALLBACK_HEADER = 4;
-                var method = _stub.GetMethod(data,
-                    isAsk ? CALLBACK_HEADER : METHOD_HEADER,
-                    Guid);
-                if (method == null)
-                {
+                var method = _stub.GetMethod(
+                    data,
+                    isAsk 
+                        ? (short)(METHOD_HEADER + CALLBACK_HEADER) 
+                        : METHOD_HEADER,
+                    Guid
+                );
+                
+                if (method == null) {
                     Console.WriteLine("Recieved packet for unregistered method.");
                     return;
                 }
 
-                var replyData = method.Invoke();
-                if (isAsk)
-                {
+                var replyObject = method.Invoke();
+                if (isAsk) {
                     Array.Copy(requestHash, data, requestHash.Length);
-                    data = _ask.PackReply(data, replyData);
+                    data = _ask.PackReply(data, replyObject);
                     _connection.Send(data);
                 }
             };
@@ -73,7 +76,7 @@ namespace TachyonServerRPC
 
         public void Send(string method, params object[] args)
         {
-            var methodHash = _hasher.HashMethod(method);
+            var methodHash = _hasher.HashString(method);
             var data = _stub.PackSend(methodHash, args);
             _connection.Send(data);
         }

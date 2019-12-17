@@ -101,16 +101,17 @@ namespace TachyonClientBinder
             var returnGenericType = returnType.GenericTypeArguments[0].NameInCode();
             
             x.Write($"BLOCK:public {returnType.NameInCode()} {methodInfo.Name}({paramsArgVarStr})");
-            x.Write("bool finished = false;");
-            x.Write( returnGenericType + " result = default;");
-            x.Write($"_client.Ask<{returnGenericType}>(\"{methodInfo.Name}\"," +
-                    $"(r) => {{result = r; finished = true;}}, {paramVarStr});");
-            x.Write("var t = Task.Run(" +
-                    "() => { " +
-                        "while (!finished) Task.Yield(); " +
-                        "return result; " +
-                    "});");
-            x.Write($"return t;");
+            x.Write($"return _client.AskTask<{returnGenericType}>(\"{methodInfo.Name}\",{paramVarStr});");
+            // x.Write("bool finished = false;");
+            // x.Write( returnGenericType + " result = default;");
+            // x.Write($"_client.Ask<{returnGenericType}>(\"{methodInfo.Name}\"," +
+            //         $"(r) => {{result = r; finished = true;}}, {paramVarStr});");
+            // x.Write("var t = Task.Run(" +
+            //         "() => { " +
+            //             "while (!finished) Task.Yield(); " +
+            //             "return result; " +
+            //         "});");
+            // x.Write($"return t;");
             x.FinishBlock();
         }
 

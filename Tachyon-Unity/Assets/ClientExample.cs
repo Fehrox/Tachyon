@@ -1,21 +1,17 @@
 ﻿using TachyonClientRPC;
-using UnityEngine.UI;
 using UnityEngine;
 using System.Text;
-using System;
 using Interop;
-using UnityEditor.SceneManagement;
 
 [RequireComponent(typeof(TachyonUnityConnection))]
 public class ClientExample : MonoBehaviour {
 
-    
     ClientRpc _client;
 
     public void Start() {
 
         var clientCore = GetComponent<TachyonUnityConnection>();
-        _client = new ClientRpc(clientCore, new JsonSerializer());
+        _client = new ClientRpc(clientCore, new Interop.ManualSerializer());
 
         _client.OnConnected += () => Debug.Log("Connected to server.");
         _client.OnFailedToConnect += () => Debug.Log("FailedToConnect");
@@ -30,7 +26,7 @@ public class ClientExample : MonoBehaviour {
 
     void OnRecieved(byte[] bytes) {
         var str = Encoding.ASCII.GetString(bytes);
-        Console.WriteLine("Received: " + str);
+        Debug.Log("Received: " + str);
     }
 
 }

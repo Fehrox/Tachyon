@@ -45,7 +45,7 @@ namespace TachyonClientCommon
             }
         }
 
-        public InvocationDescriptor GetMethod(byte[] data, short argStartIndex)
+        public InvocationDescriptor UnpackReceive(byte[] data, short argStartIndex)
         {
             var methodHashBytes = data.Take(METHOD_HEADER).ToArray();
             var methodHash = BitConverter.ToInt16(methodHashBytes, 0);
@@ -53,17 +53,22 @@ namespace TachyonClientCommon
             if (_methods.ContainsKey(methodHash))
             {
                 var clientMethod = _methods[methodHash];
-
-                var argumetData = data.Skip(argStartIndex).ToArray();
+                
+                var argumentData = data.Skip(argStartIndex).ToArray();
                 var argTypes = clientMethod.Method.GetParameters()
                     .Select(p => p.ParameterType).ToArray();
-                var args = _serializer.DeserializeObject(argumetData, argTypes);
+                
+                var args = new List<object>();
+                if (argTypes.Length > 1) {
+                    throw new NotImplementedException("Handle multiple params.");
+                }
 
-                //var argType = args.GetType().FullName;
+                var firstArgType = argTypes.First();
+                var arg = _serializer.DeserializeObject(argumentData, firstArgType);
+                args.Add(arg);
 
-                return new InvocationDescriptor
-                {
-                    ArgumentData = args,
+                return new InvocationDescriptor {
+                    ArgumentData = args.ToArray(),
                     ClientMethod = clientMethod
                 };
             }
@@ -75,26 +80,34 @@ namespace TachyonClientCommon
 
         public void Invoke(byte[] data)
         {
-            var method = GetMethod(data, METHOD_HEADER);
-            if (method != null) method.Invoke();
+            var method = UnpackReceive(data, METHOD_HEADER);
+            method?.Invoke();
         }
 
-        public byte[] PackSend(short methodHash, object[] arg)
+        public byte[] PackSend(short methodHash, object[] args)
         {
-            var commandHeaderBytes = BitConverter.GetBytes(methodHash);
-            var argData = _serializer.SerializeObject(arg);
+            byte[] sendData;
+            
+            if (args.Length > 1) {
+                throw new NotImplementedException("Handle multiple params.");
+            } else
+            {
+                var arg = args.Single();
+                var commandHeaderBytes = BitConverter.GetBytes(methodHash);
+                var argData = _serializer.SerializeObject(arg);
 
-            var sendData = new byte[commandHeaderBytes.Length + argData.Length];
-            Array.Copy(commandHeaderBytes, sendData, commandHeaderBytes.Length);
-            Array.Copy(argData, 0, sendData, commandHeaderBytes.Length, argData.Length);
-
+                sendData = new byte[commandHeaderBytes.Length + argData.Length];
+                Array.Copy(commandHeaderBytes, sendData, commandHeaderBytes.Length);
+                Array.Copy(argData, 0, sendData, commandHeaderBytes.Length, argData.Length);
+            }
+            
             return sendData;
         }
 
         public class RemoteMethod
         {
-            public object Target;
-            public MethodInfo Method;
+            public readonly object Target;
+            public readonly MethodInfo Method;
 
             public RemoteMethod(
                 MethodInfo method,

@@ -23,24 +23,27 @@ namespace ClientProgram
         {
             Console.WriteLine("Sending!");
             _sw.Restart();
+           
             var ping = _service.Ping(DateTime.Now.Ticks);
-            Task.Run(() => Pong(ping.Result));
-            _service.Log(new LogDTO {Message = "Console speaks! " + _i++});
+            Pong(ping);
+            
+            _service.Log(new LogDto {Message = "Console speaks! " + _i++});
         }
-        
-        private static void Pong(long ticks)
+
+        private static async void Pong(Task<long> ping)
         {
+            var ticks = await ping;
             Console.WriteLine("Time to server: " + new TimeSpan(ticks).TotalMilliseconds + "ms");
             Console.WriteLine("Round Trip: " + _sw.ElapsedMilliseconds + "ms");
             _sw.Stop();
         }
 
-        public static void HandleOnLog(LogDTO message)
+        public static void HandleOnLog(LogDto message)
         {
             Console.WriteLine(message.Message);
         }
 
-        public static void HandleOnLogWarning(LogDTO message)
+        public static void HandleOnLogWarning(LogDto message)
         {
             Console.WriteLine("Warning: " + message.Message);
         }

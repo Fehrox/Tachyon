@@ -10,7 +10,7 @@ namespace ServerProgram
     {
         private static void Main(string[] args)
         {
-            var endPointMap = new EndPointMap(new JsonSerializer());
+            var endPointMap = new EndPointMap(new ManualSerializer());
             var host = new HostCore(endPointMap);
             var service = new ExampleService();
             host.Bind(service);

@@ -35,31 +35,30 @@ namespace TachyonServerRPC
         public InvocationDescriptor GetMethod(
             byte[] data,
             short argStartIndex,
-            string guid
-        )
-        {
+            string guid 
+        ) {
             var methodHash = BitConverter.ToInt16(new[] {data[0], data[1]});
             methodHash = DistinguishClientHash(methodHash, guid);
             var methodHashBytes = BitConverter.GetBytes(methodHash);
             data[0] = methodHashBytes[0];
             data[1] = methodHashBytes[1];
-            return GetMethod(data, argStartIndex);
+            return UnpackReceive(data, argStartIndex);
         }
 
         /// <summary>
         /// Ensures multiple ConnectedClients are able to 
-        /// register their thair callbacks without conflicting.
+        /// register their their callbacks without conflicting.
         /// </summary>
         /// <param name="methodHash">Unmodified method hash</param>
         /// <param name="guid">Client connection Guid.</param>
-        /// <returns>Method Has unique to give clieknt Guid.</returns>
+        /// <returns>Method hash unique to given client Guid.</returns>
         private short DistinguishClientHash(
             short methodHash,
             string guid
         )
         {
             var hasher = new Hasher();
-            return (short) (methodHash + hasher.HashMethod(guid));
+            return (short) (methodHash + hasher.HashString(guid));
         }
     }
 }

@@ -1,22 +1,23 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using TachyonCommon;
 
 namespace Interop
 {
     [Interop]
-    public interface IExampleService {
-        
-        event Action<LogDTO> OnLogWarning;
+    public interface IExampleService
+    {
+        event Action<LogDto> OnLogWarning;
 
-        event Action<LogDTO> OnLog;
-        
+        event Action<LogDto> OnLog;
+
         Task<long> Ping(long clientTime);
-        
-        void Log(LogDTO log);
+
+        void Log(LogDto log);
     }
 
-    public class LogDTO
+    public partial class LogDto 
     {
         public string Message;
     }

@@ -6,15 +6,15 @@ namespace ServerProgram
 {
     public class ExampleService : IExampleService
     {
-        public event Action<LogDTO> OnLogWarning;
+        public event Action<LogDto> OnLogWarning;
 
-        public event Action<LogDTO> OnLog;
+        public event Action<LogDto> OnLog;
 
         private int _i = 0;
 
         public void Update()
         {
-            var log = new LogDTO
+            var log = new LogDto
             {
                 //Message = "Short." };
                 Message = "This is some message " + _i++ + "! " +
@@ -36,15 +36,16 @@ namespace ServerProgram
             if (_i % 2 == 0)
                 OnLog?.Invoke(log);
             else
-                OnLogWarning?.Invoke(new LogDTO {Message = "."});
+                OnLogWarning?.Invoke(new LogDto {Message = "."});
         }
 
-        public Task<long> Ping(long clientTime)
+        public async Task<long> Ping(long clientTime)
         {
-            return Task.FromResult(DateTime.Now.Ticks - clientTime);
+            var result = await Task.FromResult(DateTime.Now.Ticks - clientTime);
+            return result;
         }
 
-        public void Log(LogDTO log)
+        public void Log(LogDto log)
         {
             Console.WriteLine(log.Message);
         }

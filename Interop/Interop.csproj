@@ -9,7 +9,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+      <Reference Include="JsonFx, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>JsonFx.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

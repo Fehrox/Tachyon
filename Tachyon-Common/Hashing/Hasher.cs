@@ -6,7 +6,7 @@ namespace TachyonCommon.Hash
 {
     public class Hasher : IHasher
     {
-        public virtual short HashMethod(string method)
+        public virtual short HashString(string method)
         {
             var methodBytes = Encoding.UTF8.GetBytes(method);
 
