@@ -33,10 +33,11 @@ namespace TachyonClientBinder
 
         private static void WriteCode(ISourceWriter x)
         {
-            x.UsingNamespace(typeof(TService).Namespace);
             x.UsingNamespace(typeof(ClientRpc).Namespace);
             x.UsingNamespace(typeof(Task<>).Namespace);
             x.UsingNamespace(typeof(Action<>).Namespace);
+            if(!string.IsNullOrEmpty(typeof(TService).Namespace))
+                x.UsingNamespace(typeof(TService).Namespace);
 
             // Class/Namespace
             x.Namespace("GeneratedBindings");
@@ -121,11 +122,12 @@ namespace TachyonClientBinder
             var paramsVarStr = string.Join(
                 ",", 
                 parameters.Select(p => p.ParameterType.Name + " " + p.Name+"Arg"));
-            var paramVarStr = string.Join(
-                ",",
-                parameters.Select(p => p.Name+"Arg"));
+            var paramVarStr = parameters.Length > 0 
+                ? ", " + string.Join( ",", parameters.Select(p => p.Name+"Arg"))
+                : string.Empty;
+
             x.Write($"BLOCK:public void {methodInfo.Name}({paramsVarStr})");
-            x.Write($"_client.Send(\"{methodInfo.Name}\", {paramVarStr});");
+            x.Write($"_client.Send(\"{methodInfo.Name}\"{paramVarStr});");
             x.FinishBlock();
         }
 

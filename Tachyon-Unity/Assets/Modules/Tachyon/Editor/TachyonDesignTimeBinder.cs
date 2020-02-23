@@ -75,12 +75,13 @@ public static class TachyonDesignTimeBinder
         if (binder == null) {
             Debug.LogError("Tachyon-Binder missing.");
         } else {
-            var bindingsDir = new DirectoryInfo(
-                binder.Directory?.Parent + "/Bindings/");
+            if (interopInterfaceFile.Directory?.FullName == null) return;
+            var interopInterfacePath = new DirectoryInfo(
+                interopInterfaceFile.Directory.FullName );
             ProcessStart(
                 binder,
                 interopInterfaceFile, 
-                bindingsDir
+                interopInterfacePath
             );
         }
     }
