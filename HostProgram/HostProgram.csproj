@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Interop\Interop.csproj" />
-    <ProjectReference Include="..\Tachyon-Host-Binder\Tachyon-Host-Binder.csproj" />
+    <ProjectReference Include="..\Binder\Tachyon-Host-Binder\Tachyon-Host-Binder.csproj" />
     <ProjectReference Include="..\Tachyon-Host-Core\Tachyon-Host-Core.csproj" />
     <ProjectReference Include="..\Tachyon-Host-IO\Tachyon-Host-IO.csproj" />
     <ProjectReference Include="..\Tachyon-Host-RPC\Tachyon-Host-RPC.csproj" />

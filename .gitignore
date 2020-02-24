@@ -15,8 +15,8 @@ Tachyon-Client-IO/bin/
 Tachyon-Client-IO/obj/
 Tachyon-Client-RPC/bin/
 Tachyon-Client-RPC/obj/
-Tachyon-Client-Binder/bin/
-Tachyon-Client-Binder/obj/
+Binder/Tachyon-Client-Binder/bin/
+Binder/Tachyon-Client-Binder/obj/
 
 Tachyon-Common/bin/
 Tachyon-Common/obj/
@@ -27,8 +27,8 @@ Tachyon-Host-IO/bin/
 Tachyon-Host-IO/obj/
 Tachyon-Host-RPC/bin/
 Tachyon-Host-RPC/obj/
-Tachyon-Host-Binder/bin/
-Tachyon-Host-Binder/obj/
+Binder/Tachyon-Host-Binder/bin/
+Binder/Tachyon-Host-Binder/obj/
 
 Tachyon-Unity/.vs/
 Tachyon-Unity/.vscode/
@@ -39,8 +39,8 @@ Tachyon-Unity/Temp/
 Tachyon-Unity/ProjectSettings/
 Tachyon-Unity/Logs/
 
-Tachyon-Binder/bin
-Tachyon-Binder/obj
+Binder/Tachyon-Binder/bin
+Binder/Tachyon-Binder/obj
 
 .vs/
 .idea/

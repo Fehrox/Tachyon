@@ -19,13 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tachyon-Common", "Tachyon-C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Host-Core", "Tachyon-Host-Core\Tachyon-Host-Core.csproj", "{FF5D447D-0188-41A4-8365-3343065F0C65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Host-Binder", "Tachyon-Host-Binder\Tachyon-Host-Binder.csproj", "{113C7D3B-EC58-4175-8CE5-692228F3747C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Host-Binder", "Binder\Tachyon-Host-Binder\Tachyon-Host-Binder.csproj", "{113C7D3B-EC58-4175-8CE5-692228F3747C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interop", "Interop\Interop.csproj", "{DE6C4FE3-59C3-4E96-BB01-6532B9854964}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Client-Binder", "Tachyon-Client-Binder\Tachyon-Client-Binder.csproj", "{50FFBEA0-9457-418D-9AF9-BA2C84D1E516}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Client-Binder", "Binder\Tachyon-Client-Binder\Tachyon-Client-Binder.csproj", "{50FFBEA0-9457-418D-9AF9-BA2C84D1E516}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Binder", "Tachyon-Binder\Tachyon-Binder.csproj", "{76A26992-C333-4910-AEFD-1B98A3585E67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Binder", "Binder\Tachyon-Binder\Tachyon-Binder.csproj", "{76A26992-C333-4910-AEFD-1B98A3585E67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
