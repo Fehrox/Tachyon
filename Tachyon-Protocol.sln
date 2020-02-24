@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostProgram", "HostProgram\HostProgram.csproj", "{47A1CCF8-A55C-43DA-A285-3B8D6FD6CF1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostProgram", "Examples\HostProgram\HostProgram.csproj", "{47A1CCF8-A55C-43DA-A285-3B8D6FD6CF1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tachyon-Client-IO", "Tachyon-Client-IO\Tachyon-Client-IO.csproj", "{9E0D8734-6F00-4917-8A0A-58FB9B6C6062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientProgram", "ClientProgram\ClientProgram.csproj", "{2950D80F-7FCC-4C75-8FB4-0641A0C84D7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientProgram", "Examples\ClientProgram\ClientProgram.csproj", "{2950D80F-7FCC-4C75-8FB4-0641A0C84D7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Client-RPC", "Tachyon-Client-RPC\Tachyon-Client-RPC.csproj", "{7B276A03-06A7-4F0F-9671-75C682FF5897}"
 EndProject
@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Host-Core", "Tachyo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Host-Binder", "Binder\Tachyon-Host-Binder\Tachyon-Host-Binder.csproj", "{113C7D3B-EC58-4175-8CE5-692228F3747C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interop", "Interop\Interop.csproj", "{DE6C4FE3-59C3-4E96-BB01-6532B9854964}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interop", "Examples\Interop\Interop.csproj", "{DE6C4FE3-59C3-4E96-BB01-6532B9854964}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tachyon-Client-Binder", "Binder\Tachyon-Client-Binder\Tachyon-Client-Binder.csproj", "{50FFBEA0-9457-418D-9AF9-BA2C84D1E516}"
 EndProject

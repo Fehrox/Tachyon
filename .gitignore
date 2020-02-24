@@ -1,15 +1,15 @@
 packages/
 
-ClientProgram/bin/
-ClientProgram/obj/
-ClientProgram/Properties/
+Examples/ClientProgram/bin/
+Examples/ClientProgram/obj/
+Examples/ClientProgram/Properties/
 
-HostProgram/.vs/
-HostProgram/bin/
-HostProgram/obj/
+Examples/HostProgram/.vs/
+Examples/HostProgram/bin/
+Examples/HostProgram/obj/
 
-Interop/bin/
-Interop/obj/
+Examples/Interop/bin/
+Examples/Interop/obj/
 
 Tachyon-Client-IO/bin/
 Tachyon-Client-IO/obj/
