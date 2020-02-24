@@ -10,18 +10,18 @@ namespace TachyonServerBinder
         public static void Bind<TService>(
             this HostCore host,
             TService service
-        ) where TService : class
-        {
-            if (!service.GetType().IsInterface)
-            {
-                var interfaceType = service.GetType().GetInterfaces()
-                    .First(i => i.IsAssignableFrom(typeof(TService)));
-                HostRuntimeBinder<TService>.Bind(host, interfaceType, service, host._endPoints);
-            }
-            else
-            {
-                HostRuntimeBinder<TService>.Bind(host, service, host._endPoints);
-            }
+        ) where TService : class {
+            HostRuntimeBinder<TService>.Bind(host, service, host._endPoints);
+            // if (!service.GetType().IsInterface)
+            // {
+            //     // var interfaceType = service.GetType().GetInterfaces()
+            //     //     .First(i => i.IsAssignableFrom(typeof(TService)));
+            //     HostRuntimeBinder<TService>.Bind(host, service, host._endPoints);
+            // }
+            // else
+            // {
+            //     HostRuntimeBinder<TService>.Bind(host, service, host._endPoints);
+            // }
         }
     }
 }

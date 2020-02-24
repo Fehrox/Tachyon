@@ -37,7 +37,7 @@ namespace TachyonServerRPC
             short argStartIndex,
             string guid 
         ) {
-            var methodHash = BitConverter.ToInt16(new[] {data[0], data[1]});
+            var methodHash = BitConverter.ToInt16(new[] {data[0], data[1]}, 0);
             methodHash = DistinguishClientHash(methodHash, guid);
             var methodHashBytes = BitConverter.GetBytes(methodHash);
             data[0] = methodHashBytes[0];

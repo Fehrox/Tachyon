@@ -13,29 +13,13 @@ namespace TachyonClientRPC
         private Asks _ask;
         private AskHasher _hasher;
 
-        public RecievedEvent OnRecieved
-        {
-            get => _client.OnRecieved;
-            set => _client.OnRecieved = value;
-        }
+        public event RecievedEvent OnRecieved;
 
-        public ConnectionEvent OnDisconnected
-        {
-            get => _client.OnDisconnected;
-            set => _client.OnDisconnected = value; 
-        }
+        public ConnectionEvent OnDisconnected;
 
-        public ConnectionEvent OnConnected
-        {
-            get => _client.OnConnected;
-            set => _client.OnConnected = value;
-        }
+        public ConnectionEvent OnConnected;
 
-        public ConnectionEvent OnFailedToConnect
-        {
-            get => _client.OnFailedToConnect;
-            set => _client.OnFailedToConnect = value;
-        }
+        public ConnectionEvent OnFailedToConnect;
 
         public ClientRpc(IClient client, ISerializer serializer)
         {
@@ -49,6 +33,12 @@ namespace TachyonClientRPC
         public void Connect(string host, int port)
         {
             _client.Connect(host, port);
+
+            _client.OnConnected += () => OnConnected?.Invoke();
+            _client.OnDisconnected += () => OnDisconnected?.Invoke();
+            _client.OnRecieved += (r) => OnRecieved?.Invoke(r);
+            _client.OnFailedToConnect += () => OnFailedToConnect?.Invoke();
+            
             OnRecieved += Recieved;
         }
 

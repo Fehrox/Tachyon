@@ -11,8 +11,8 @@ namespace TachyonServerRPC
         public readonly ISerializer Serializer;
         public readonly AskHasher Hasher = new AskHasher();
 
-        private readonly List<Action<ConnectedClient>> _sendEndPoints = new List<Action<ConnectedClient>>();
-        private readonly List<Action<ConnectedClient>> _askEndPoints = new List<Action<ConnectedClient>>();
+        private readonly List<Action<ClientConnection>> _sendEndPoints = new List<Action<ClientConnection>>();
+        private readonly List<Action<ClientConnection>> _askEndPoints = new List<Action<ClientConnection>>();
 
         public EndPointMap(ISerializer serializer)
         {
@@ -25,12 +25,12 @@ namespace TachyonServerRPC
         /// </summary>
         /// <typeparam name="T">Type of the method's argument.</typeparam>
         /// <param name="endPoint">The method called by the client.</param>
-        public void AddSendEndpoint<T>(Action<ConnectedClient, T> endPoint)
+        public void AddSendEndpoint<T>(Action<ClientConnection, T> endPoint)
         {
             AddSendEndpoint(endPoint, endPoint.Method.Name);
         }
 
-        public void AddSendEndpoint<T>(Action<ConnectedClient, T> endPoint, string methodName)
+        public void AddSendEndpoint<T>(Action<ClientConnection, T> endPoint, string methodName)
         {
             _sendEndPoints.Add((client) =>
             {
@@ -46,12 +46,12 @@ namespace TachyonServerRPC
         /// <typeparam name="I">Request parameter type</typeparam>
         /// <typeparam name="O">Response data type</typeparam>
         /// <param name="clientMethod">Method which will handle the request.</param>
-        public void AddAskEndpoint<I, O>(Func<ConnectedClient, I, O> clientMethod)
+        public void AddAskEndpoint<I, O>(Func<ClientConnection, I, O> clientMethod)
         {
             AddAskEndpoint(clientMethod, clientMethod.Method.Name);
         }
 
-        public void AddAskEndpoint<I, O>(Func<ConnectedClient, I, O> clientMethod, string methodName)
+        public void AddAskEndpoint<I, O>(Func<ClientConnection, I, O> clientMethod, string methodName)
         {
             _askEndPoints.Add((client) =>
             {
@@ -66,7 +66,7 @@ namespace TachyonServerRPC
         /// Register this connection to participate in endpoint interractions.
         /// </summary>
         /// <param name="connection">Connected to connect to endpoints.</param>
-        public void RegisterConnection(ConnectedClient connection)
+        public void RegisterConnection(ClientConnection connection)
         {
             foreach (var sendEndPoint in _sendEndPoints)
                 sendEndPoint.Invoke(connection);

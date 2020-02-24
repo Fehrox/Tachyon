@@ -2,15 +2,11 @@ using System;
 using System.Linq;
 using TachyonClientRPC;
 
-namespace TachyonClientBinder
-{
-    public class ClientBinder<TService> where TService : class
-    {
-
-        public static TService Bind(ClientRpc clientRpc)
-        {
+namespace TachyonClientBinder {
+    public class ClientRuntimeBinder<TService> where TService : class {
+        public static TService Bind(ClientRpc clientRpc) {
             var asm = ClientBindingWriter<TService>.GenerateAssembly();
-            
+
             var binderType = asm.GetExportedTypes().Single();
             var serviceInstance = Activator.CreateInstance(binderType);
 
@@ -19,7 +15,5 @@ namespace TachyonClientBinder
 
             return (TService) serviceInstance;
         }
-
-
     }
 }

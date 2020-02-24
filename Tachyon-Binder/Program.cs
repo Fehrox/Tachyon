@@ -5,6 +5,7 @@ using System.Reflection;
 using LamarCompiler;
 using TachyonClientBinder;
 using TachyonCommon;
+using TachyonServerBinder;
 
 namespace TachyonBinder
 {
@@ -12,12 +13,14 @@ namespace TachyonBinder
     {
         static int Main(string[] args)
         {
-            //Console.WriteLine(string.Join(", ", args));
             
-            if (args.Length != 2) {
+            System.Diagnostics.Debugger.Launch(); 
+            
+            if (args.Length != 3) {
+                var actualArgs = string.Join(' ', args);
                 Console.Error.WriteLine(
-                    "Invalid argument(s) provided. \n"+
-                    "Expecting: Tachyon-Binder {sourceFile} {outputPath}.");
+                    "Invalid argument(s) provided ("+actualArgs+"). \n"+
+                    "Expecting: Tachyon-Binder {sourceFile} {outputPath} {--host|--client}.");
                 return -1;
             }
 
@@ -25,37 +28,66 @@ namespace TachyonBinder
             var exists = File.Exists(argStr);
             if (exists)
             {
-                var file = new FileInfo(argStr); 
-//                Console.WriteLine("Generating bindings for " + file.FullName);
+                var file = new FileInfo(argStr);
                 var codeStr = File.ReadAllText(file.FullName);
 
                 var assemblyGenerator = new AssemblyGenerator();
-                assemblyGenerator.ReferenceAssemblyContainingType<InteropAttribute>();
+                var attr = typeof(GenerateBindingsAttribute).Assembly;
+                assemblyGenerator.ReferenceAssemblyContainingType<GenerateBindingsAttribute>();
                 var assembly = assemblyGenerator.Generate(codeStr);
 
                 var interfaceTypes = assembly.GetTypes()
                     .Where(t => t.IsInterface);
-                foreach (var type in interfaceTypes)
-                {
-//                    Console.WriteLine(type.FullName);
+                foreach (var type in interfaceTypes) {
                     var destDir = args.Length > 1
                         ? new DirectoryInfo(args[1])
-                        : file.Directory; 
-                    var result = GenerateClientBindingCode(type, destDir);
-                    if (result != 0)
-                        return result;
+                        : file.Directory;
+                    
+                    if (args[2] == "--host") {
+                        var result = GenerateHostBindingCode(type, destDir);
+                        if (result != 0)
+                            return result;
+                    } else if (args[2] == "--client") {
+                        var result = GenerateClientBindingCode(type, destDir);
+                        if (result != 0)
+                            return result;
+                    } else {
+                        Console.Error.WriteLine("Host or client not specified.");
+                        return -1;
+                    }
+                    
                 }
             }
-
-//            Console.WriteLine("Tachyon binding generation complete.");
+            
             return 0;
         }
-
-        private static int GenerateClientBindingCode(Type type, DirectoryInfo destDir)
-        {
+        
+        private static int GenerateHostBindingCode(Type type, DirectoryInfo destDir) {
+            var genericBindWriter = typeof(HostBindingWriter<>)
+                .MakeGenericType(type);
+            return GenerateBindingCode(
+                type, destDir,
+                genericBindWriter, 
+                "HostBinding.cs"
+            );
+        }
+        
+        private static int GenerateClientBindingCode(Type type, DirectoryInfo destDir) {
             var genericBindWriter = typeof(ClientBindingWriter<>)
                 .MakeGenericType(type);
+            return GenerateBindingCode(
+                type, destDir,
+                genericBindWriter, 
+                "ClientBinding.cs"
+            );
+        }
 
+        private static int GenerateBindingCode(
+            Type type, 
+            DirectoryInfo destDir, 
+            Type genericBindWriter,
+            string bindingAppendage
+        ) {
             var bindingFlags =
                 BindingFlags.Static |
                 BindingFlags.Public |
@@ -68,9 +100,9 @@ namespace TachyonBinder
                 ?.Invoke(null, new object[0]);
 
             if (destDir == null) return -1;
-            
+
             var generatedFile = destDir.FullName +
-                                "/" + type.Name + "ClientBinding.cs";
+                "/" + type.Name + bindingAppendage;
             File.WriteAllText(generatedFile, generatedCode);
 
             var generatedFileInfo = new FileInfo(generatedFile);

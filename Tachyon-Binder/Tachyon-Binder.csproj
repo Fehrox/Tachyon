@@ -9,6 +9,11 @@
     <ItemGroup>
       <ProjectReference Include="..\Tachyon-Client-Binder\Tachyon-Client-Binder.csproj" />
       <ProjectReference Include="..\Tachyon-Common\Tachyon-Common.csproj" />
+      <ProjectReference Include="..\Tachyon-Host-Binder\Tachyon-Host-Binder.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ILLink.Tasks" Version="0.1.5-preview-1841731" />
     </ItemGroup>
 
 </Project>

@@ -13,9 +13,9 @@ namespace TachyonClientIO
         void Connect(string host, int port);
         void Send(byte[] data);
 
-        RecievedEvent OnRecieved { get; set; }
-        ConnectionEvent OnDisconnected { get; set; }
-        ConnectionEvent OnConnected { get; set; }
-        ConnectionEvent OnFailedToConnect { get; set; }
+        event RecievedEvent OnRecieved;
+        event ConnectionEvent OnDisconnected;
+        event ConnectionEvent OnConnected;
+        event ConnectionEvent OnFailedToConnect;
     }
 }

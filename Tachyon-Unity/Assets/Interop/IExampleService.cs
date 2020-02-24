@@ -1,12 +1,11 @@
-using System;
-using System.Text;
 using System.Threading.Tasks;
 using TachyonCommon;
+using System;
 
 namespace Interop
-{
-    [Interop]
-    public interface IExampleService
+{    
+    [GenerateBindings]
+    public interface IExampleService  
     {
         event Action<LogDto> OnLogWarning;
 

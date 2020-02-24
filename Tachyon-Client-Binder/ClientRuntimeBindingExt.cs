@@ -6,7 +6,7 @@ namespace TachyonClientBinder
     {
         public static TService Bind<TService>(this ClientRpc clientRpc) where TService : class
         {
-            return ClientBinder<TService>.Bind(clientRpc);
+            return ClientRuntimeBinder<TService>.Bind(clientRpc);
         }
     }
 }

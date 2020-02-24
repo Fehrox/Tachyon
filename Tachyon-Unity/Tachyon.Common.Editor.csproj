@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{999EE297-5402-3D24-38CC-9789774DD84D}</ProjectGuid>
+    <ProjectGuid>{B37EF2CD-D20E-1343-1AB5-44ED4926215D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Tachyon.Common.Editor</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -58,35 +58,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Client\ClientExample.cs" />
-     <Compile Include="Assets\Client\ExampleController.cs" />
-     <Compile Include="Assets\Host\ExampleService.cs" />
-     <Compile Include="Assets\Host\HostExample.cs" />
-     <Compile Include="Assets\Interop\IExampleService.cs" />
-     <Compile Include="Assets\Interop\IExampleServiceClientBinding.cs" />
-     <Compile Include="Assets\Interop\IExampleServiceHostBinding.cs" />
-     <Compile Include="Assets\Interop\LogDto.cs" />
-     <Compile Include="Assets\Interop\ManualSerializer.cs" />
- <Reference Include="CondUIt.Editor">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/ScriptAssemblies/CondUIt.Editor.dll</HintPath>
+     <Compile Include="\media\Work\SEB-Tachyon\UnityPackages\TachyonCommon-UnityPackage\Editor\TachyonDesignTimeBinder.cs" />
+ <Reference Include="UnityEditor.UI">
+ <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="Coroutiner">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/ScriptAssemblies/Coroutiner.dll</HintPath>
- </Reference>
- <Reference Include="CondUIt">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/ScriptAssemblies/CondUIt.dll</HintPath>
- </Reference>
- <Reference Include="Unity.CollabProxy.Editor">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Rider.Editor">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.UI">
- <HintPath>/media/Work/SEB-Tachyon/Tachyon-Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>/opt/unity/2019.3.0f3/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -258,6 +235,18 @@
  </Reference>
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/opt/unity/2019.3.0f3/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.VR">
+ <HintPath>/opt/unity/2019.3.0f3/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Graphs">
+ <HintPath>/opt/unity/2019.3.0f3/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.WebGL.Extensions">
+ <HintPath>/opt/unity/2019.3.0f3/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.LinuxStandalone.Extensions">
+ <HintPath>/opt/unity/2019.3.0f3/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
  </Reference>
  <Reference Include="Tachyon-Client-IO">
  <HintPath>/media/Work/SEB-Tachyon/UnityPackages/TachyonClient-UnityPackage/Tachyon-Client-IO.dll</HintPath>
@@ -622,20 +611,6 @@
  <Reference Include="mscorlib">
  <HintPath>/opt/unity/2019.3.0f3/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/mscorlib.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Tachyon.Client.csproj">
-      <Project>{17EF9048-94D6-752A-6958-909D9CE47C2C}</Project>
-      <Name>Tachyon.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="NewAssembly.csproj">
-      <Project>{DFD03915-51D1-4733-A6EC-BC063E51BFBE}</Project>
-      <Name>NewAssembly</Name>
-    </ProjectReference>
-    <ProjectReference Include="Tachyon.Common.Editor.csproj">
-      <Project>{B37EF2CD-D20E-1343-1AB5-44ED4926215D}</Project>
-      <Name>Tachyon.Common.Editor</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

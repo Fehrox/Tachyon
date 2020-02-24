@@ -1,0 +1,11 @@
+[submodule "UnityPackages/TachyonClient-UnityPackage"]
+	path = UnityPackages/TachyonClient-UnityPackage
+	url = https://github.com/Fehrox/TachyonClient-UnityPackage.git
+
+[submodule "UnityPackages/TachyonCommon-UnityPackage"]
+	path = UnityPackages/TachyonCommon-UnityPackage
+	url = https://github.com/Fehrox/TachyonCommon-UnityPackage.git
+
+[submodule "UnityPackages/TachyonHost-UnityPackage"]
+	path = UnityPackages/TachyonHost-UnityPackage
+	url = https://github.com/Fehrox/TachyonHost-UnityPackage.git

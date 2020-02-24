@@ -9,13 +9,11 @@ namespace TachyonClientIO
     public class Client : IClient
     {
         private bool _connected = false;
-        //AutoResetEvent _wait = new AutoResetEvent(false);
 
-        public RecievedEvent OnRecieved { get; set; }
-
-        public ConnectionEvent OnDisconnected { get; set; }
-        public ConnectionEvent OnConnected { get; set; }
-        public ConnectionEvent OnFailedToConnect { get; set; }
+        public event RecievedEvent OnRecieved;
+        public event ConnectionEvent OnDisconnected;
+        public event ConnectionEvent OnConnected;
+        public event ConnectionEvent OnFailedToConnect;
 
         private NetworkStream _stream;
         private PacketIO _packetIO;
@@ -29,7 +27,12 @@ namespace TachyonClientIO
         private void Connected(IAsyncResult ar)
         {
             var client = ar.AsyncState as TcpClient;
-            client.EndConnect(ar);
+            try {
+                client.EndConnect(ar);
+            } catch (SocketException) {
+                OnFailedToConnect?.Invoke();
+                return;
+            }
 
             if (client.Connected)
             {
@@ -118,10 +121,10 @@ namespace TachyonClientIO
         //    }
         //}
 
-        private class ReadResult
-        {
-            public byte[] Buffer;
-            public NetworkStream Stream;
-        }
+        // private class ReadResult
+        // {
+        //     public byte[] Buffer;
+        //     public NetworkStream Stream;
+        // }
     }
 }
