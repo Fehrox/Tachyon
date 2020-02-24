@@ -2,12 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <RootNamespace>Tachyon_Server_Binder</RootNamespace>
+        <RootNamespace>TachyonClientBinder</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tachyon-Host-Core\Tachyon-Host-Core.csproj" />
-      <ProjectReference Include="..\Tachyon-Host-RPC\Tachyon-Host-RPC.csproj" />
+      <ProjectReference Include="..\..\Tachyon-Client-RPC\Tachyon-Client-RPC.csproj" />
     </ItemGroup>
 
     <ItemGroup>
