@@ -4,7 +4,7 @@ using TachyonCommon;
 using System.Linq;
 using System;
 
-namespace TachyonClientCommon
+namespace TachyonCommon
 {
     public class Stub
     {

@@ -13,7 +13,7 @@ namespace ClientProgram
         {
             var client = new ClientRpc(new Client(), new ManualSerializer());
             client.OnConnected += () => Console.WriteLine("Connected to server.");
-            client.OnFailedToConnect += () => Console.WriteLine("FailedToConnect");
+            client.OnFailedToConnect += (ex) => Console.WriteLine("FailedToConnect " + ex.Message);
             client.OnDisconnected += () => Console.WriteLine("Disconnected");
             client.Connect("localhost", 13);
 
@@ -28,9 +28,5 @@ namespace ClientProgram
             }
         }
 
-        private static void ReplyMethod(bool obj)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

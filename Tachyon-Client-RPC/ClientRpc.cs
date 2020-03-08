@@ -1,5 +1,4 @@
 ﻿using TachyonClientIO;
-using TachyonClientCommon;
 using System;
 using TachyonCommon;
 using TachyonCommon.Hash;
@@ -19,14 +18,14 @@ namespace TachyonClientRPC
 
         public ConnectionEvent OnConnected;
 
-        public ConnectionEvent OnFailedToConnect;
+        public FailedConnectionEvent OnFailedToConnect;
 
         public ClientRpc(IClient client, ISerializer serializer)
         {
             _client = client;
 
             _stub = new Stub(serializer);
-            _ask = new Asks(_stub, serializer);
+            _ask = new Asks(serializer);
             _hasher = new AskHasher();
         }
 
@@ -37,7 +36,7 @@ namespace TachyonClientRPC
             _client.OnConnected += () => OnConnected?.Invoke();
             _client.OnDisconnected += () => OnDisconnected?.Invoke();
             _client.OnRecieved += (r) => OnRecieved?.Invoke(r);
-            _client.OnFailedToConnect += () => OnFailedToConnect?.Invoke();
+            _client.OnFailedToConnect += (ex) => OnFailedToConnect?.Invoke(ex);
             
             OnRecieved += Recieved;
         }

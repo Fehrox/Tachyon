@@ -12,11 +12,16 @@ namespace TachyonServerCore {
         public event Action<ClientConnection> OnDisconnected;
         public event Action<ClientConnection> OnConnected;
 
-        private List<ClientConnection> _clients = new List<ClientConnection>();
-        public readonly EndPointMap _endPoints;
+        public readonly EndPointMap EndPoints;
+        private readonly List<ClientConnection> _clients = new List<ClientConnection>();
+        private readonly IReplyProcessor _replyProcessor;
 
-        public HostCore(EndPointMap endPoints) {
-            _endPoints = endPoints;
+        public HostCore(EndPointMap endPoints, IReplyProcessor replyProcessor = null) {
+            if (replyProcessor == null)
+                replyProcessor = new SynchronousReplyProcessor();
+            _replyProcessor = replyProcessor;
+            
+            EndPoints = endPoints;
         }
 
         public HostCore Start() {
@@ -40,11 +45,11 @@ namespace TachyonServerCore {
                 while (true) {
                     var tcpClient = tcpListener.AcceptTcpClient();
 
-                    var stub = _endPoints.Stub;
-                    var hasher = _endPoints.Hasher;
+                    var stub = EndPoints.Stub;
+                    var hasher = EndPoints.Hasher;
                     var connection = new ClientConnection(
-                        tcpClient, stub, hasher, _endPoints.Serializer);
-                    _endPoints.RegisterConnection(connection);
+                        tcpClient, stub, hasher, EndPoints.Serializer, _replyProcessor);
+                    EndPoints.RegisterConnection(connection);
                     connection.Start();
 
                     connection.OnDisconnected += () => {

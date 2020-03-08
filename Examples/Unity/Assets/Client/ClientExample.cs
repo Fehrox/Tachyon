@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using TachyonClientRPC;
 using UnityEngine;
 using System.Text;
@@ -23,7 +22,7 @@ public class ClientExample : MonoBehaviour {
         _client = new ClientRpc(clientCore, new Interop.ManualSerializer());
 
         _client.OnConnected += () => Debug.Log("Connected to server.");
-        _client.OnFailedToConnect += () => Debug.Log("FailedToConnect");
+        _client.OnFailedToConnect += (ex) => Debug.Log("FailedToConnect " + ex.Message);
         _client.OnDisconnected += () => Debug.Log("Disconnected");
         _client.Connect("127.0.0.1", 13);
         

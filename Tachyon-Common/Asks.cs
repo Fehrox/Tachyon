@@ -1,37 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TachyonClientCommon;
+using TachyonCommon;
 using TachyonCommon.Hash;
 
-namespace TachyonCommon
-{
-    public class Asks
-    {
+namespace TachyonCommon {
+    public class Asks {
         private const int ASK_BIT_INDEX = 0;
         private SortedList<short, Stub.RemoteMethod> _pendingResponses = new SortedList<short, Stub.RemoteMethod>();
         private List<short> _pendingRequests = new List<short>();
         private ISerializer _serializer;
 
-        public Asks(Stub stub, ISerializer serializer)
-        {
+        public Asks(ISerializer serializer) {
             _serializer = serializer;
         }
 
-        public bool IsReplyPacket(byte[] bytes)
-        {
+        public bool IsReplyPacket(byte[] bytes) {
             return ConvertByteToBitAddres(bytes[0], ASK_BIT_INDEX);
         }
 
-        public void Replied(byte[] response)
-        {
+        public void Replied(byte[] response) {
             short methodHashSize = sizeof(short),
                 callbackIdSize = sizeof(short);
 
             var callingMethodHash = BitConverter.ToInt16(response, 0);
             var isRegistedRequest = _pendingRequests.Contains(callingMethodHash);
-            if (isRegistedRequest)
-            {
+            if (isRegistedRequest) {
                 var callbackId = BitConverter.ToInt16(response, methodHashSize);
                 var request = _pendingResponses[callbackId];
 
@@ -43,26 +37,25 @@ namespace TachyonCommon
                 var parameters = new List<object>();
                 if (callbackArgs.Length > 1) {
                     throw new NotImplementedException("Handle multiple params.");
-                } else {
+                }
+                else {
                     var callbackArg = callbackArgs.First();
                     var arg = _serializer.DeserializeObject(
-                        argData.ToArray(), 
-                        callbackArg );
+                        argData.ToArray(),
+                        callbackArg);
                     parameters.Add(arg);
                 }
-                
-                request.Method.Invoke(request.Target, parameters.ToArray() );
+
+                request.Method.Invoke(request.Target, parameters.ToArray());
                 _pendingRequests.Remove(callingMethodHash);
             }
-            else
-            {
+            else {
                 Console.WriteLine("Recieved response to " +
                                   "unregestered request " + callingMethodHash);
             }
         }
 
-        public byte[] PackReply(byte[] data, object reply)
-        {
+        public byte[] PackReply(byte[] data, object reply) {
             //var replyJson = _serializer.SerializeObject(reply);
             //var replyArgData = Encoding.ASCII.GetBytes(replyJson);
             var replyArgData = _serializer.SerializeObject(reply);
@@ -75,8 +68,7 @@ namespace TachyonCommon
             return replyData.ToArray();
         }
 
-        public byte[] PackAsk<T>(byte[] data, Action<T> reply)
-        {
+        public byte[] PackAsk<T>(byte[] data, Action<T> reply) {
             var methodHash = BitConverter.ToInt16(data, 0);
             methodHash = AskHasher.SetAskBit(methodHash, true);
             var methodHashBytes = BitConverter.GetBytes(methodHash);
@@ -106,8 +98,7 @@ namespace TachyonCommon
         //}
 
 
-        private bool ConvertByteToBitAddres(byte byteToConvert, int bitToReturn)
-        {
+        private bool ConvertByteToBitAddres(byte byteToConvert, int bitToReturn) {
             var mask = 1 << bitToReturn;
             return (byteToConvert & mask) == mask;
         }

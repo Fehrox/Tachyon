@@ -11,17 +11,12 @@ namespace TachyonServerIO
     public class Connection : IConnection
     {
         private PacketIO _packetIO;
-
-        //const int CHUNK_SIZE = 254;
         private bool _connected = true;
-        //AutoResetEvent _recieveLock = new AutoResetEvent(false);
-        //List<byte[]> _recieveBuffer = new List<byte[]>();
 
         public RecievedEvent OnRecieved { get; set; }
         public ConnectionEvent OnDisconnected { get; set; }
 
         private TcpClient _client;
-        //Queue<string> _sendQueue = new Queue<string>();
 
         public Connection(TcpClient client)
         {
@@ -32,13 +27,9 @@ namespace TachyonServerIO
         public void Start()
         {
             var stream = _client.GetStream();
-            //SendConnectAck(stream);
             new Thread(() => Read(stream)).Start();
         }
 
-        //void SendConnectAck(NetworkStream stream) {
-        //    stream.Write(new byte[] { 0x0 }, 0, 1);
-        //}
 
         private void Read(object streamObj)
         {
@@ -49,28 +40,6 @@ namespace TachyonServerIO
                     {
                         var recievedBytes = _packetIO.Recieve();
                         OnRecieved(recievedBytes);
-                        //_recieveBuffer.Clear();
-                        //int incomingBytes = stream.ReadByte();
-                        //do {
-
-                        //    byte[] buffer = new byte[incomingBytes];
-                        //    var message = stream.BeginRead(
-                        //        buffer, 0, incomingBytes,
-                        //        new AsyncCallback(Recieved),
-                        //        new Result {
-                        //            Buffer = buffer,
-                        //            Stream = stream
-                        //        });
-                        //    _recieveLock.WaitOne();
-
-                        //    incomingBytes = stream.ReadByte();
-
-                        //} while (incomingBytes == CHUNK_SIZE);
-
-                        //var recievedBytes = _recieveBuffer
-                        //    .SelectMany(chunk => chunk)
-                        //    .ToArray();
-                        //OnRecieved(recievedBytes);
                     }
                     catch (IOException)
                     {
@@ -79,19 +48,6 @@ namespace TachyonServerIO
 
             OnDisconnected?.Invoke();
         }
-
-        //void Recieved(IAsyncResult ar) {
-
-        //    var recieved = (ar.AsyncState as Result);
-        //    var stream = recieved.Stream;
-        //    var buffer = recieved.Buffer;
-
-        //    var bytesRead = stream.EndRead(ar);
-        //    _recieveBuffer.Add(buffer);
-
-        //    _recieveLock.Set();
-
-        //}
 
         public void Send(byte[] data)
         {
@@ -106,27 +62,7 @@ namespace TachyonServerIO
                     var stream = _client.GetStream();
 
                     _packetIO.Send(data);
-                    //Console.WriteLine("Sending " + data.Length + " bytes");
 
-                    //for (int i = 0; i < data.Length; i += CHUNK_SIZE) {
-
-                    //    // If the size of a chunk is anything other than 
-                    //    // CHUNK_SIZE the reciever will know it's the end 
-                    //    // of the message.
-                    //    var currentChunkSize = data.Length - i;
-                    //    var writeSize = Math.Min(CHUNK_SIZE, currentChunkSize);
-                    //    if (currentChunkSize == CHUNK_SIZE + 1)
-                    //        writeSize = currentChunkSize;
-                    //    var chunk = Slice(data, i, writeSize);
-
-                    //    Console.WriteLine("Sending CHUNK of " + chunk.Length + " bytes");
-                    //    var lengthByte = BitConverter.GetBytes((short)chunk.Length)[0];
-                    //    stream.WriteByte(lengthByte);
-                    //    Console.WriteLine("Bytes " + chunk.Length);
-
-                    //    stream.WriteAsync(chunk);
-
-                    //}
                 }
             }
             catch (IOException)
@@ -141,10 +77,5 @@ namespace TachyonServerIO
             Array.Copy(buffer, index, slice, 0, length);
             return slice;
         }
-
-        //private class Result {
-        //    public byte[] Buffer;
-        //    public NetworkStream Stream;
-        //}
     }
 }

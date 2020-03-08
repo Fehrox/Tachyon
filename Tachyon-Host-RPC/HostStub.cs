@@ -1,5 +1,4 @@
 ﻿using System;
-using TachyonClientCommon;
 using TachyonCommon;
 using TachyonCommon.Hash;
 

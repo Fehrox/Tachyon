@@ -5,7 +5,7 @@ using Interop;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ExampleController : MonoBehaviour
+public class ExampleController : MonoBehaviour            
 {
     private IExampleService _service;
     
@@ -14,7 +14,7 @@ public class ExampleController : MonoBehaviour
     
     private static Stopwatch _sw = new Stopwatch();
 
-    public void Inject(IExampleService service) {
+    public void Inject(IExampleService service) {  
         _service = service;
         service.OnLog += HandleOnLog;
         service.OnLogWarning += HandleOnLogWarning;

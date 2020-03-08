@@ -11,11 +11,14 @@ namespace TachyonBinder
 {
     class Program
     {
-        static int Main(string[] args)
-        {
-            
-            System.Diagnostics.Debugger.Launch(); 
-            
+        static int Main(string[] args) {
+
+            args = new[] {
+                "/media/Work/CR-Titan/Agents/TITAN.USRI/Packages/AIR-UnityTestpilot-Remote/Runtime/IRemoteUnityDriverAgent.cs",
+                "/media/Work/CR-Titan/Agents/TITAN.USRI/Packages/AIR-UnityTestpilot-Remote/Runtime",
+                "--host"
+            };
+
             if (args.Length != 3) {
                 var actualArgs = string.Join(' ', args);
                 Console.Error.WriteLine(
